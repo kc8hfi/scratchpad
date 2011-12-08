@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='ISO-8859-1'  ?>
+<!DOCTYPE index
+  PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp Index Version 1.0//EN"
+         "http://java.sun.com/products/javahelp/index_1_0.dtd">
+				 
+<index version="1.0">
+
+<indexitem text="ScratchPad">
+   <indexitem text="article" target="article">
+       <indexitem text="copy" target="article"/>
+	     <indexitem text="cut" target="article"/>
+	     <indexitem text="paste" target="article"/>
+			 <indexitem text="Saving" target="">
+           <indexitem text="toolbar" target="toolbar"/>
+					 <indexitem text="menubar" target="menu"/>
+					 <indexitem text="rightclick menu" target="rightmenu"/>
+					 <indexitem text="different node" target="clicknode"/>
+			 </indexitem>
+	 </indexitem> 
+	 <indexitem text="overview" target="overview"/>
+   <indexitem text="tree" target="tree">
+	     <indexitem text="Add child" target="childnode"/>
+			 <indexitem text="Add sibling" target="siblingnode"/>
+			 <indexitem text="Delete node" target="deletenode"/>
+			 <indexitem text="Edit node name" target="editname"/>
+			 <indexitem text="cut a node" target="cutnode"/>
+			 <indexitem text="paste" target="mvtree">
+			      <indexitem text="As child" target="pastechild"/>
+						<indexitem text="As sibling" target="pastesibling"/> 
+			 </indexitem>
+			 <indexitem text="Move node up" target="moveup"/>
+			 <indexitem text="Move node down" target="movedown"/>			
+	 </indexitem>
+
+	
+</indexitem>	 
+	 
+</index>

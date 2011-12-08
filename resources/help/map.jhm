@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='ISO-8859-1' ?>
+<!DOCTYPE map
+  PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp Map Version 1.0//EN"
+         "http://java.sun.com/products/javahelp/map_1_0.dtd">
+
+<map version="1.0">
+	<mapID target="toplevelfolder" url="images/toplevel.gif" />
+	<mapID target="beginning" url="beginning.html" />
+	<mapID target="overview" url="overview.html" />
+	<mapID target="tree" url="tree.html" />
+	<mapID target="addnode" url="addnode.html" />
+	<mapID target="childnode" url="addnode.html#child" />
+	<mapID target="siblingnode" url="addnode.html#sibling" />
+	<mapID target="editname" url="addnode.html#name" />
+	<mapID target="article" url="article.html" />
+	<mapID target="savearticle" url="article.html#savearticle" />
+	<mapID target="menu" url="article.html#toolmenu" />
+  <mapID target="rightmenu" url="article.html#rclickmenu" />
+	<mapID target="toolbar" url="article.html#articletool" />
+	<mapID target="clicknode" url="article.html#treenode" />
+	<mapID target="deletenode" url="addnode.html#delete" />
+	<mapID target="mvtree" url="movetree.html"/>
+	<mapID target="cutnode" url="movetree.html#cutpaste"/>
+	<mapID target="pastechild" url="movetree.html#pastechildnode"/>
+	<mapID target="pastesibling" url="movetree.html#pastesibling"/>
+	<mapID target="moveup" url="movetree.html#nodeup"/>
+	<mapID target="movedown" url="movetree.html#nodedown"/>
+</map>
