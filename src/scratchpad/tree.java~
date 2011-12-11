@@ -5,7 +5,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.JTree;
 import javax.swing.tree.*;
-
+import javax.swing.event.*;
 import java.net.URL;
 
 public class tree extends JPanel
@@ -53,10 +53,20 @@ public class tree extends JPanel
 		contentsAction = new ContentsAction("Contents", "contents",KeyStroke.getKeyStroke(KeyEvent.VK_F1,0));
 		aboutAction = new AboutAction("About", "about",KeyStroke.getKeyStroke(KeyEvent.VK_B,ActionEvent.CTRL_MASK));
 
+		childNumber = 0;
+		siblingNumber = 0;
 		
+		item = new DataInfo("untitled","");
+		parent = new DefaultMutableTreeNode(item);
 		
-		DefaultMutableTreeNode top = new DefaultMutableTreeNode("new tree");
-		thetree = new JTree(top);
+		thetree = new JTree(parent);
+		//thetree.setEditable(false);
+		thetree.setShowsRootHandles(true);
+		//Where the tree is initialized:
+		thetree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+		treeModel = new DefaultTreeModel(parent);
+		treeModel.addTreeModelListener(new MyListener());
+		
 		JScrollPane treeView = new JScrollPane(thetree);
 	
 		JTextArea textArea = new JTextArea(5,20);
@@ -188,8 +198,12 @@ public class tree extends JPanel
 				moveUpAction,moveDownAction;
 	private Action contentsAction,aboutAction;
 	
+	private DefaultMutableTreeNode parent;
+	private DefaultTreeModel treeModel;
+	private DataInfo item;
 	
-	
+	private int childNumber;
+	private int siblingNumber;
 	
 	
 	
@@ -356,6 +370,30 @@ public class tree extends JPanel
 		public void actionPerformed(ActionEvent e)
 		{
 			System.out.println("with the new actions stuff,  " + e.getActionCommand());
+			DefaultMutableTreeNode parentNode = null;
+			TreePath parentPath = thetree.getSelectionPath();
+			if (parentPath == null)
+			{
+				System.out.println("nothing selected in the tree");
+			}
+			else
+			{
+				System.out.println("they have something selected");
+				parentNode = (DefaultMutableTreeNode)(parentPath.getLastPathComponent());
+				DataInfo newitem = new DataInfo("child"+Integer.toString(childNumber),"a bunch of stuff for sibling");
+				DefaultMutableTreeNode child = new DefaultMutableTreeNode(newitem);
+				
+				System.out.println("before children: " + Integer.toString(parentNode.getChildCount()));
+				
+				treeModel.insertNodeInto(child,parentNode,parentNode.getChildCount());
+				
+				System.out.println("aftger children: " + Integer.toString(parentNode.getChildCount()));
+				
+				thetree.scrollPathToVisible(new TreePath(child.getPath()));
+				
+				
+				childNumber++;
+			}
 		}
 	}
 	public class AddSiblingAction extends AbstractAction
@@ -368,7 +406,28 @@ public class tree extends JPanel
 		}
 		public void actionPerformed(ActionEvent e)
 		{
-			System.out.println("with the new actions stuff,  " + e.getActionCommand());
+			DataInfo n = new DataInfo("sibling" + Integer.toString(siblingNumber),"nothing");
+			
+			DefaultMutableTreeNode parentNode = null;
+			TreePath parentPath = thetree.getSelectionPath();
+			
+			if (parentPath == null)
+			{
+				//no selection, default to root node
+				System.out.println("default to root node");
+			}
+			else
+			{
+				parentNode = (DefaultMutableTreeNode)(parentPath.getLastPathComponent());
+			}
+			DefaultMutableTreeNode child = new DefaultMutableTreeNode(n);
+			treeModel.insertNodeInto(child,parentNode,parentNode.getChildCount());
+			
+			thetree.scrollPathToVisible(new TreePath(child.getPath()));
+			
+			
+			
+			siblingNumber++;
 		}
 	}
 	public class DeleteAction extends AbstractAction
@@ -435,6 +494,32 @@ public class tree extends JPanel
 		{
 			System.out.println("with the new actions stuff,  " + e.getActionCommand());
 		}
+	}
+	
+	public class MyListener implements TreeModelListener
+	{
+		public void treeNodesChanged(TreeModelEvent e)
+		{
+			DefaultMutableTreeNode node;
+			node = (DefaultMutableTreeNode)(e.getTreePath().getLastPathComponent());
+			try
+			{
+				int index = e.getChildIndices()[0];
+				node = (DefaultMutableTreeNode)(node.getChildAt(index));
+			}
+			catch(NullPointerException npe)
+			{
+				
+			}
+		}//end treeNodesChanged
+		
+		public void treeNodesInserted(TreeModelEvent e) {
+		}
+		public void treeNodesRemoved(TreeModelEvent e) {
+		}
+		public void treeStructureChanged(TreeModelEvent e) {
+		}
+
 	}
 
 }//end tree class

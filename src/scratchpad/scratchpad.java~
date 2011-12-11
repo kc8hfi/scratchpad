@@ -12,8 +12,6 @@ public class scratchpad
 		JFrame thepad = new JFrame();
 		thepad.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		//actions ma = new actions();
-		
 		tree p = new tree(thepad);
 		thepad.setContentPane(p);
 		
@@ -23,5 +21,8 @@ public class scratchpad
 		
 		thepad.pack();
 		thepad.setVisible(true);
+		
+		
+		datainfo test = new datainfo("blah","blah");
 	}
 }//end scratchpad class
