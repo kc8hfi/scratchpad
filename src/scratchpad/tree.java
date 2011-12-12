@@ -39,9 +39,7 @@ public class tree extends JPanel
 										  "save article");
 		renameAction = new RenameAction("Rename",createImageIcon("/chname.jpg","rename icon"),"rename",
 								  KeyStroke.getKeyStroke(KeyEvent.VK_F2,0));
-		addChildAction = new AddChildAction("Add Child",createImageIcon("/newchild.jpg","add child icon"),"add child",
-									 KeyStroke.getKeyStroke(KeyEvent.VK_C,ActionEvent.CTRL_MASK|ActionEvent.ALT_MASK));
-		addSiblingAction = new AddSiblingAction("Add Sibling",createImageIcon("/newsibling.jpg"," icon"),"add sibling",
+		addNodeAction = new AddNodeAction("Add Item",createImageIcon("/newnode.jpg"," icon"),"add sibling",
 										KeyStroke.getKeyStroke(KeyEvent.VK_INSERT,ActionEvent.CTRL_MASK));
 		deleteAction = new DeleteAction("Delete",createImageIcon("/del.jpg","delete icon"),"delete",
 								  KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,ActionEvent.CTRL_MASK));
@@ -53,19 +51,19 @@ public class tree extends JPanel
 		contentsAction = new ContentsAction("Contents", "contents",KeyStroke.getKeyStroke(KeyEvent.VK_F1,0));
 		aboutAction = new AboutAction("About", "about",KeyStroke.getKeyStroke(KeyEvent.VK_B,ActionEvent.CTRL_MASK));
 
-		childNumber = 0;
-		siblingNumber = 0;
+		nodeCount = 0;
 		
 		item = new DataInfo("untitled","");
-		parent = new DefaultMutableTreeNode(item);
+		rootNode = new DefaultMutableTreeNode(item);
+
+		treeModel = new DefaultTreeModel(rootNode);
+		treeModel.addTreeModelListener(new MyListener());
 		
-		thetree = new JTree(parent);
+		thetree = new JTree(treeModel);
 		//thetree.setEditable(false);
 		thetree.setShowsRootHandles(true);
 		//Where the tree is initialized:
 		thetree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-		treeModel = new DefaultTreeModel(parent);
-		treeModel.addTreeModelListener(new MyListener());
 		
 		JScrollPane treeView = new JScrollPane(thetree);
 	
@@ -136,8 +134,8 @@ public class tree extends JPanel
 		
 		JMenu toolsMenu = new JMenu("Options");
 		toolsMenu.setMnemonic(KeyEvent.VK_O);
-		Action [] optionsActions = {saveArticleAction,renameAction,addChildAction,
-			addSiblingAction,deleteAction,moveUpAction,moveDownAction
+		Action [] optionsActions = {saveArticleAction,renameAction,
+			addNodeAction,deleteAction,moveUpAction,moveDownAction
 		};
 		for(int i=0;i<optionsActions.length;i++)
 		{
@@ -154,7 +152,7 @@ public class tree extends JPanel
 			}
 		}//end loop
 
-		JMenu helpMenu = new JMenu("Options");
+		JMenu helpMenu = new JMenu("Help");
 		helpMenu.setMnemonic(KeyEvent.VK_O);
 		Action [] helpActions = {contentsAction,aboutAction};
 		for(int i=0;i<helpActions.length;i++)
@@ -194,16 +192,15 @@ public class tree extends JPanel
 	private JTree thetree;
 	private Action newAction,openAction,saveAction,saveAsAction,quitAction;
 	private Action findAction,cutAction,copyAction,pasteAction;
-	private Action saveArticleAction,renameAction,addChildAction,addSiblingAction,deleteAction,
+	private Action saveArticleAction,renameAction,addNodeAction,deleteAction,
 				moveUpAction,moveDownAction;
 	private Action contentsAction,aboutAction;
 	
-	private DefaultMutableTreeNode parent;
+	private DefaultMutableTreeNode rootNode;
 	private DefaultTreeModel treeModel;
 	private DataInfo item;
-	
-	private int childNumber;
-	private int siblingNumber;
+
+	private int nodeCount;
 	
 	
 	
@@ -359,9 +356,9 @@ public class tree extends JPanel
 			System.out.println("with the new actions stuff,  " + e.getActionCommand());
 		}
 	}
-	public class AddChildAction extends AbstractAction
+	public class AddNodeAction extends AbstractAction
 	{
-		public AddChildAction(String text, ImageIcon icon,String desc, KeyStroke accelerator)
+		public AddNodeAction(String text, ImageIcon icon,String desc, KeyStroke accelerator)
 		{
 			super(text,icon); //text is the actual name
 			putValue(SHORT_DESCRIPTION, desc); //used for tooltip text
@@ -369,67 +366,27 @@ public class tree extends JPanel
 		}
 		public void actionPerformed(ActionEvent e)
 		{
-			System.out.println("with the new actions stuff,  " + e.getActionCommand());
+			DataInfo n = new DataInfo("new node " + Integer.toString(nodeCount),"");
 			DefaultMutableTreeNode parentNode = null;
 			TreePath parentPath = thetree.getSelectionPath();
-			if (parentPath == null)
+
+			if (parentPath == null) 
 			{
-				System.out.println("nothing selected in the tree");
-			}
-			else
-			{
-				System.out.println("they have something selected");
-				parentNode = (DefaultMutableTreeNode)(parentPath.getLastPathComponent());
-				DataInfo newitem = new DataInfo("child"+Integer.toString(childNumber),"a bunch of stuff for sibling");
-				DefaultMutableTreeNode child = new DefaultMutableTreeNode(newitem);
-				
-				System.out.println("before children: " + Integer.toString(parentNode.getChildCount()));
-				
-				treeModel.insertNodeInto(child,parentNode,parentNode.getChildCount());
-				
-				System.out.println("aftger children: " + Integer.toString(parentNode.getChildCount()));
-				
-				thetree.scrollPathToVisible(new TreePath(child.getPath()));
-				
-				
-				childNumber++;
-			}
-		}
-	}
-	public class AddSiblingAction extends AbstractAction
-	{
-		public AddSiblingAction(String text, ImageIcon icon,String desc, KeyStroke accelerator)
-		{
-			super(text,icon); //text is the actual name
-			putValue(SHORT_DESCRIPTION, desc); //used for tooltip text
-			putValue(ACCELERATOR_KEY,accelerator);
-		}
-		public void actionPerformed(ActionEvent e)
-		{
-			DataInfo n = new DataInfo("sibling" + Integer.toString(siblingNumber),"nothing");
-			
-			DefaultMutableTreeNode parentNode = null;
-			TreePath parentPath = thetree.getSelectionPath();
-			
-			if (parentPath == null)
-			{
-				//no selection, default to root node
-				System.out.println("default to root node");
-			}
-			else
+				//There is no selection. Default to the root node.
+				parentNode = rootNode;
+			} 
+			else 
 			{
 				parentNode = (DefaultMutableTreeNode)(parentPath.getLastPathComponent());
 			}
-			DefaultMutableTreeNode child = new DefaultMutableTreeNode(n);
-			treeModel.insertNodeInto(child,parentNode,parentNode.getChildCount());
-			
-			thetree.scrollPathToVisible(new TreePath(child.getPath()));
-			
-			
-			
-			siblingNumber++;
-		}
+			DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(n);
+			treeModel.insertNodeInto(newNode,parentNode,parentNode.getChildCount());
+			thetree.scrollPathToVisible(new TreePath(newNode.getPath()));
+			nodeCount++;
+		}//end actionPerformed
 	}
+	
+	
 	public class DeleteAction extends AbstractAction
 	{
 		public DeleteAction(String text, ImageIcon icon,String desc, KeyStroke accelerator)
