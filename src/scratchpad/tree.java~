@@ -53,21 +53,23 @@ public class tree extends JPanel
 
 		nodeCount = 0;
 		
-		item = new DataInfo("untitled","");
+		item = new DataInfo("untitled","nothing to see here");
 		rootNode = new DefaultMutableTreeNode(item);
 
 		treeModel = new DefaultTreeModel(rootNode);
 		treeModel.addTreeModelListener(new MyListener());
 		
+		
 		thetree = new JTree(treeModel);
-		//thetree.setEditable(false);
+		thetree.setEditable(true);
 		thetree.setShowsRootHandles(true);
 		//Where the tree is initialized:
 		thetree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+		thetree.addTreeSelectionListener(new MyMouseListener());
 		
 		JScrollPane treeView = new JScrollPane(thetree);
 	
-		JTextArea textArea = new JTextArea(5,20);
+		textArea = new JTextArea(5,20);
 		JScrollPane textView = new JScrollPane(textArea);
 		
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,treeView,textView);
@@ -134,7 +136,7 @@ public class tree extends JPanel
 		
 		JMenu toolsMenu = new JMenu("Options");
 		toolsMenu.setMnemonic(KeyEvent.VK_O);
-		Action [] optionsActions = {saveArticleAction,renameAction,addChildAction,
+		Action [] optionsActions = {saveArticleAction,renameAction,
 			addNodeAction,deleteAction,moveUpAction,moveDownAction
 		};
 		for(int i=0;i<optionsActions.length;i++)
@@ -190,9 +192,10 @@ public class tree extends JPanel
 		
 	private JFrame parentWindow;
 	private JTree thetree;
+	private JTextArea textArea;
 	private Action newAction,openAction,saveAction,saveAsAction,quitAction;
 	private Action findAction,cutAction,copyAction,pasteAction;
-	private Action saveArticleAction,renameAction,addChildAction,addNodeAction,deleteAction,
+	private Action saveArticleAction,renameAction,addNodeAction,deleteAction,
 				moveUpAction,moveDownAction;
 	private Action contentsAction,aboutAction;
 	
@@ -354,28 +357,13 @@ public class tree extends JPanel
 		public void actionPerformed(ActionEvent e)
 		{
 			System.out.println("with the new actions stuff,  " + e.getActionCommand());
-		}
-	}
-	public class AddChildAction extends AbstractAction
-	{
-		public AddChildAction(String text, ImageIcon icon,String desc, KeyStroke accelerator)
-		{
-			super(text,icon); //text is the actual name
-			putValue(SHORT_DESCRIPTION, desc); //used for tooltip text
-			putValue(ACCELERATOR_KEY,accelerator);
-		}
-		public void actionPerformed(ActionEvent e)
-		{
-			System.out.println("with the new actions stuff,  " + e.getActionCommand());
-			DefaultMutableTreeNode parentNode = null;
-			TreePath parentPath = thetree.getSelectionPath();
-			if (parentPath == null)
+			TreePath path = thetree.getSelectionPath();
+			if (path != null)
 			{
-				System.out.println("nothing selected in the tree");
-			}
-			else
-			{
-				System.out.println("they have something selected");
+				DefaultMutableTreeNode node = (DefaultMutableTreeNode)path.getLastPathComponent();
+				System.out.println("before: " + node.toString());
+				thetree.startEditingAtPath(path);
+				System.out.println("after: " + node.toString());
 			}
 		}
 	}
@@ -482,24 +470,48 @@ public class tree extends JPanel
 		{
 			DefaultMutableTreeNode node;
 			node = (DefaultMutableTreeNode)(e.getTreePath().getLastPathComponent());
+			//DataInfo n = (DataInfo)node.getUserObject();
+			
+			//System.out.println("before name: " + node.toString());
 			try
 			{
 				int index = e.getChildIndices()[0];
 				node = (DefaultMutableTreeNode)(node.getChildAt(index));
+				//System.out.println("node changed: " +e.toString());
 			}
 			catch(NullPointerException npe)
 			{
 				
 			}
+			//System.out.println("user finished editing");
+			//System.out.println("new value: " + node.getUserObject());
 		}//end treeNodesChanged
 		
 		public void treeNodesInserted(TreeModelEvent e) {
+			System.out.println("node inserted");
 		}
 		public void treeNodesRemoved(TreeModelEvent e) {
+			System.out.println("node removed");
 		}
 		public void treeStructureChanged(TreeModelEvent e) {
+			System.out.println("structure changed");
 		}
 
+	}
+	
+	public class MyMouseListener implements TreeSelectionListener
+	{
+		public void valueChanged(TreeSelectionEvent e)
+		{
+			DefaultMutableTreeNode node = (DefaultMutableTreeNode)thetree.getLastSelectedPathComponent();
+			if (node != null)
+			{
+				DataInfo n = (DataInfo)node.getUserObject();
+				//System.out.println("name: " + n.toString());
+				//System.out.println("data: " + n.getData());
+				textArea.setText(n.getData());
+			}
+		}
 	}
 
 }//end tree class

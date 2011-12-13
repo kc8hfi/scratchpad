@@ -30,6 +30,22 @@ public class DataInfo
 	{
 		return name;
 	}
+	
+	public void setName(String n)
+	{
+		name = n;
+	}
+	
+	public String getData()
+	{
+		return data;
+	}
+	
+	public void setData(String d)
+	{
+		data = d;
+	}
+	
 	private String name;
 	private String data;
 }//end datainfo
