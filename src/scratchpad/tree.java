@@ -7,6 +7,7 @@ import javax.swing.JTree;
 import javax.swing.tree.*;
 import javax.swing.event.*;
 import java.net.URL;
+import javax.sound.sampled.*;
 
 public class tree extends JPanel
 {
@@ -422,6 +423,18 @@ public class tree extends JPanel
 		}//end actionPerformed
 	}
 	
+	 void populate() {
+	 
+	 DefaultMutableTreeNode a = new DefaultMutableTreeNode("Apple");
+	 treeModel.insertNodeInto(a, rootNode, rootNode.getChildCount());
+	 
+	 DefaultMutableTreeNode m = new DefaultMutableTreeNode("Mango");
+	 treeModel.insertNodeInto(m, rootNode, rootNode.getChildCount());
+ 
+	 DefaultMutableTreeNode g = new DefaultMutableTreeNode("Guava");
+	 treeModel.insertNodeInto(g, rootNode, rootNode.getChildCount());
+ 
+	}
 	
 	public class DeleteAction extends AbstractAction
 	{
@@ -434,19 +447,97 @@ public class tree extends JPanel
 		public void actionPerformed(ActionEvent e)
 		{
 			//System.out.println("delete?,  " + e.getActionCommand());
+			int j;
 			DefaultMutableTreeNode selectedNode = null;
 			TreePath selectedNodePath = thetree.getSelectionPath();
 			if (selectedNodePath != null)
 			{
 				selectedNode = (DefaultMutableTreeNode)(selectedNodePath.getLastPathComponent());
-				if (selectedNode.getParent() != null) //child node, we can delete it
+				if (selectedNode.getParent() != null) //its not the root node
 				{
-					//System.out.println("delete me: " + selectedNode.toString());
-					treeModel.removeNodeFromParent(selectedNode);
-				}
-			}
-		}
-	}
+					DefaultMutableTreeNode parent = (DefaultMutableTreeNode)selectedNode.getParent();
+					//System.out.println("selected node parent: " + parent.toString());
+					//System.out.println("selected node children: " + treeModel.getChildCount(selectedNode));
+					int total = treeModel.getChildCount(selectedNode);
+					if (treeModel.getChildCount(selectedNode) >=1)
+					{
+						//play a sound? 
+						System.out.println("before the try block");
+						try
+						{
+							System.out.println("play a sound now");
+							URL soundFileUrl = getClass().getResource("/sounds/357magnum.wav");
+							AudioInputStream sound = AudioSystem.getAudioInputStream(soundFileUrl);
+							DataLine.Info info = new DataLine.Info(Clip.class,sound.getFormat());
+							Clip clip = (Clip)AudioSystem.getLine(info);
+							clip.open(sound);
+							clip.start();
+						}
+						catch (Exception soundException)
+						{
+							System.out.println("no sound, sorry");
+						}
+						
+
+						
+						j = JOptionPane.showConfirmDialog(parentWindow,"Do you really want to delete this item?",
+													   "Delete Item?",
+								    JOptionPane.YES_NO_OPTION,
+												  JOptionPane.QUESTION_MESSAGE
+												);
+						//System.out.println("their choice: " + Integer.toString(j));
+						if (j == 0)
+						{
+							//go ahead and delete the node
+							while(treeModel.getChildCount(selectedNode) != 0)
+							{
+								DefaultMutableTreeNode c = (DefaultMutableTreeNode)treeModel.getChild(selectedNode,0);
+								//System.out.println("move: " + c.toString());
+								//System.out.println("before parent count: " + treeModel.getChildCount(parent));
+								treeModel.insertNodeInto(c,parent,treeModel.getChildCount(parent));
+								//System.out.println("after parent count: " + treeModel.getChildCount(parent));
+								//System.out.println("new child count of selectednode: " +treeModel.getChildCount(selectedNode));
+							}
+							//delete the selected node
+							treeModel.removeNodeFromParent(selectedNode);
+						}//they picked yes to delete the node, end if
+					}//there was more than one child, end if
+					else
+					{
+						System.out.println("before the try block");
+						try
+						{
+							System.out.println("play a sound now");
+							URL soundFileUrl = getClass().getResource("/sounds/357magnum.wav");
+							AudioInputStream sound = AudioSystem.getAudioInputStream(soundFileUrl);
+							DataLine.Info info = new DataLine.Info(Clip.class,sound.getFormat());
+							Clip clip = (Clip)AudioSystem.getLine(info);
+							clip.open(sound);
+							clip.start();
+						}
+						catch (Exception soundException)
+						{
+							System.out.println("no sound, sorry");
+						}
+
+						//System.out.println("remove the node since theres no children");
+						j = JOptionPane.showConfirmDialog(parentWindow,"Do you really want to delete this item?",
+													   "Delete Item?",
+								    JOptionPane.YES_NO_OPTION,
+												  JOptionPane.QUESTION_MESSAGE
+												);
+						//System.out.println("their choice: " + Integer.toString(j));
+						if (j == 0)
+						{
+							//go ahead and delete the node
+							treeModel.removeNodeFromParent(selectedNode);
+						}
+					}
+				}//end selected node is not the root node.  root node does not have a parent
+			}//end if they have a path to a selected node
+		}//end actionPerformed
+	}//end class DeleteAction
+	
 	public class MoveUpAction extends AbstractAction
 	{
 		public MoveUpAction(String text, ImageIcon icon,String desc,KeyStroke accelerator)
@@ -457,7 +548,10 @@ public class tree extends JPanel
 		}
 		public void actionPerformed(ActionEvent e)
 		{
-			System.out.println("with the new actions stuff,  " + e.getActionCommand());
+			System.out.println("move up  " + e.getActionCommand());
+			DefaultMutableTreeNode selectedNode = null;
+			TreePath selectedNodePath = thetree.getSelectionPath();
+			//if (selected.
 		}
 	}
 	public class MoveDownAction extends AbstractAction
