@@ -1,9 +1,30 @@
+/*
+ * Copyright 2002-2011 Charles Amey
+ * 
+ * This file is part of Scratchpad.
+ * 
+ * Scratchpad is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * Scratchpad is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with Scratchpad.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package scratchpad;
 
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.beans.*;
+import java.net.URL;
+import javax.sound.sampled.*;
 
 public class Rename extends JDialog
 {
@@ -38,7 +59,7 @@ public class Rename extends JDialog
 		setModal(true);
 		pack();
 		setMinimumSize(new Dimension(250,150));
-	}
+	}//end constructor
 	
 	private JTextField renameField;
 	private JButton okButton;
@@ -58,6 +79,23 @@ public class Rename extends JDialog
 		renameField.selectAll();
 	}
 	
+	private void playSound(String s)
+	{
+		try
+		{
+			URL soundFileUrl = getClass().getResource("/sounds/"+s+".wav");
+			AudioInputStream sound = AudioSystem.getAudioInputStream(soundFileUrl);
+			DataLine.Info info = new DataLine.Info(Clip.class,sound.getFormat());
+			Clip clip = (Clip)AudioSystem.getLine(info);
+			clip.open(sound);
+			clip.start();
+		}
+		catch (Exception soundException)
+		{
+			System.out.println("no sound, sorry");
+		}
+	}//end playSound
+	
 
 	class OkButtonAction extends AbstractAction
 	{
@@ -76,6 +114,8 @@ public class Rename extends JDialog
 			}
 			else
 			{
+				//playSound("monkey");
+				playSound("bullet2");
 				System.out.println("tell them to type in a name!");
 				JOptionPane.showMessageDialog(parent,"Please type in a name.","Error!",
 										JOptionPane.ERROR_MESSAGE);

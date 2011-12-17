@@ -25,9 +25,9 @@ import java.io.*;
 import java.util.*;
 import java.net.URL;
 
-public class about
+public class About extends JDialog
 {
-	public about(JFrame p)
+	public About(JFrame p)
 	{
 		d = new JDialog(p,"About Scratchpad");
 		JPanel panel = new JPanel();
@@ -66,10 +66,10 @@ public class about
 		}
 		panel.add(icons,BorderLayout.PAGE_END);
 		
-		
 		d.setContentPane(panel);
-	}
-	public void show()
+	}//end About constructor
+	
+	public void display()
 	{
 		d.pack();
 		d.setVisible(true);

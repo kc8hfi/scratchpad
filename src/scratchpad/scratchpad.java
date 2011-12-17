@@ -20,6 +20,7 @@ public class scratchpad
 		thepad.setJMenuBar(p.createMenuBar());
 		
 		thepad.pack();
+		thepad.setMinimumSize(new Dimension(500,100));
 		thepad.setVisible(true);
 	}
 }//end scratchpad class
