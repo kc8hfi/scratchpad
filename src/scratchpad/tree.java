@@ -64,13 +64,13 @@ public class tree extends JPanel implements KeyListener
 		
 		thetree.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,ActionEvent.CTRL_MASK),"delete");
 		thetree.getActionMap().put("delete",deleteAction);
-		
-		newAction = new NewAction("New",createImageIcon("/new.gif","new icon"),"new",KeyEvent.VK_N,
+
+		newAction = new NewAction("New","new","New Document",createImageIcon("/new.gif","new icon"),KeyEvent.VK_N,
 							 KeyStroke.getKeyStroke(KeyEvent.VK_N,ActionEvent.CTRL_MASK));
-		openAction = new OpenAction("Open",createImageIcon("/open.gif","open icon"),"open",KeyEvent.VK_O,
-							   KeyStroke.getKeyStroke(KeyEvent.VK_O,ActionEvent.CTRL_MASK));
-		saveAction = new SaveAction("Save",createImageIcon("/save.gif","save icon"),"save",KeyEvent.VK_S,
-							   KeyStroke.getKeyStroke(KeyEvent.VK_S,ActionEvent.CTRL_MASK));
+		openAction = new OpenAction("Open","open","Open Document",createImageIcon("/open.gif","open icon"),
+							   KeyEvent.VK_O,KeyStroke.getKeyStroke(KeyEvent.VK_O,ActionEvent.CTRL_MASK));
+		saveAction = new SaveAction("Save","save","Save Document",createImageIcon("/save.gif","save icon"),
+							   KeyEvent.VK_S,KeyStroke.getKeyStroke(KeyEvent.VK_S,ActionEvent.CTRL_MASK));
 		saveAsAction = new SaveAsAction("Save As","save as");
 		quitAction = new QuitAction("Quit","quit",KeyEvent.VK_Q,
 							   KeyStroke.getKeyStroke(KeyEvent.VK_Q,ActionEvent.CTRL_MASK));
@@ -99,7 +99,8 @@ public class tree extends JPanel implements KeyListener
 									 "move down",KeyStroke.getKeyStroke(KeyEvent.VK_D,ActionEvent.ALT_MASK));
 
 		contentsAction = new ContentsAction("Contents", "contents",KeyStroke.getKeyStroke(KeyEvent.VK_F1,0));
-		aboutAction = new AboutAction("About", "about",KeyStroke.getKeyStroke(KeyEvent.VK_B,ActionEvent.CTRL_MASK));
+		
+		aboutAction = new AboutAction("About", "about","About Scratchpad",KeyStroke.getKeyStroke(KeyEvent.VK_B,ActionEvent.CTRL_MASK));
 
 		JScrollPane treeView = new JScrollPane(thetree);
 	
@@ -235,17 +236,32 @@ public class tree extends JPanel implements KeyListener
 		for (int i=0;i<toolbarActions.length;i++)
 		{
 			button = new JButton(toolbarActions[i]);
-			if (!button.getText().equals("About"))
+			if (!button.getActionCommand().equals("about"))
+			{
 				button.setText("");
-			if (button.getText().equals("Open"))
+			}
+			else
+			{
+				toolBar.addSeparator();
+			}
+			if (button.getActionCommand().equals("new") || 
+				button.getActionCommand().equals("save")
+			)
 			{
 				toolBar.add(button);
-				toolBar.add(new JToolBar.Separator());
+				toolBar.addSeparator();
 			}
-			else 
+			else
 			{
 				toolBar.add(button);
 			}
+/*			else  if (!button.getText().equals("About")
+			{
+				button.setText("")
+				toolBar.add(button);
+				//toolBar.addSeparator();
+			}*/
+			
 		}
 	}//end createToolBar
 		
@@ -317,12 +333,15 @@ public class tree extends JPanel implements KeyListener
 	
 	public class NewAction extends AbstractAction
 	{
-		public NewAction(String text, ImageIcon icon,String desc, int mnemonic, KeyStroke accelerator)
+		public NewAction(String text, String actionCmd,String toolTip, ImageIcon icon, 
+					  int mnemonic, KeyStroke accelerator)		
+		//public NewAction(String text, ImageIcon icon,String desc, int mnemonic, KeyStroke accelerator)
 		{
 			super(text,icon); //text is the actual name
-			putValue(SHORT_DESCRIPTION, desc); //used for tooltip text
-			putValue(MNEMONIC_KEY, mnemonic);
-			putValue(ACCELERATOR_KEY,accelerator);
+			putValue(ACTION_COMMAND_KEY,actionCmd);	//set the actionCommand
+			putValue(SHORT_DESCRIPTION, toolTip); //set tooltiptext
+			putValue(MNEMONIC_KEY, mnemonic);	//set the underlined letter in the text
+			putValue(ACCELERATOR_KEY,accelerator);	//set the keyboard shortcut
 		}
 		public void actionPerformed(ActionEvent e)
 		{
@@ -331,10 +350,12 @@ public class tree extends JPanel implements KeyListener
 	}	
 	public class OpenAction extends AbstractAction
 	{
-		public OpenAction(String text, ImageIcon icon,String desc, int mnemonic,KeyStroke accelerator)
+		public OpenAction(String text, String actionCmd,String toolTip,ImageIcon icon,
+					   int mnemonic,KeyStroke accelerator)
 		{
 			super(text,icon); //text is the actual name
-			putValue(SHORT_DESCRIPTION, desc); //used for tooltip text
+			putValue(ACTION_COMMAND_KEY,actionCmd);	//action command
+			putValue(SHORT_DESCRIPTION, toolTip); //used for tooltip text
 			putValue(MNEMONIC_KEY, mnemonic);
 			putValue(ACCELERATOR_KEY,accelerator);
 		}
@@ -345,10 +366,12 @@ public class tree extends JPanel implements KeyListener
 	}		
 	public class SaveAction extends AbstractAction
 	{
-		public SaveAction(String text, ImageIcon icon,String desc, int mnemonic, KeyStroke accelerator)
+		public SaveAction(String text, String actionCmd,String toolTip,ImageIcon icon,
+					   int mnemonic, KeyStroke accelerator)
 		{
 			super(text,icon); //text is the actual name
-			putValue(SHORT_DESCRIPTION, desc); //used for tooltip text
+			putValue(ACTION_COMMAND_KEY,actionCmd);	//action command
+			putValue(SHORT_DESCRIPTION, toolTip); //used for tooltip text
 			putValue(MNEMONIC_KEY, mnemonic);
 			putValue(ACCELERATOR_KEY,accelerator);
 		}
@@ -619,10 +642,12 @@ public class tree extends JPanel implements KeyListener
 	}
 	public class AboutAction extends AbstractAction
 	{
-		public AboutAction(String text, String desc,KeyStroke accelerator)
+		//(text,action command, tooltip,keystrokc
+		public AboutAction(String text, String cmd,String toolTip,KeyStroke accelerator)
 		{
 			super(text); //text is the actual name
-			putValue(SHORT_DESCRIPTION, desc); //used for tooltip text
+			putValue(ACTION_COMMAND_KEY,cmd);	//set action command
+			putValue(SHORT_DESCRIPTION, toolTip); //used for tooltip text
 			putValue(ACCELERATOR_KEY,accelerator);
 		}
 		public void actionPerformed(ActionEvent e)
