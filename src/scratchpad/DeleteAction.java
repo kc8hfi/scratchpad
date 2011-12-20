@@ -29,19 +29,20 @@ import javax.sound.sampled.*;
 
 public class DeleteAction extends AbstractAction
 {
-	public DeleteAction(JFrame p,JTree t,String text, String actionCmd,String toolTip,ImageIcon icon,KeyStroke accelerator)
+	public DeleteAction(JFrame p,tree t,String text, String actionCmd,String toolTip,ImageIcon icon,KeyStroke accelerator)
 	{
 		super(text,icon); //text is the actual name
 		putValue(ACTION_COMMAND_KEY,actionCmd);
 		putValue(SHORT_DESCRIPTION, toolTip); //used for tooltip text
 		putValue(ACCELERATOR_KEY,accelerator);
 		
-		thetree = t;
+		myTreeClass = t;
 		parentWindow = p;
 	}
 	public void actionPerformed(ActionEvent e)
 	{
 		//System.out.println("delete?,  " + e.getActionCommand());
+		JTree thetree = myTreeClass.getTree();
 		DefaultTreeModel treeModel = (DefaultTreeModel)thetree.getModel();
 		int j;
 		DefaultMutableTreeNode selectedNode = null;
@@ -75,6 +76,8 @@ public class DeleteAction extends AbstractAction
 						}
 						//delete the selected node
 						treeModel.removeNodeFromParent(selectedNode);
+						//gotta set the filesaved flag to false, 0
+						myTreeClass.setFileSaved(0);
 					}//they picked yes to delete the node, end if
 				}//there was more than one child, end if
 				else
@@ -87,6 +90,8 @@ public class DeleteAction extends AbstractAction
 					{
 						//go ahead and delete the node
 						treeModel.removeNodeFromParent(selectedNode);
+						//gotta set the filesaved flag to false, 0
+						myTreeClass.setFileSaved(0);
 					}
 				}
 			}//end selected node is not the root node.  root node does not have a parent
@@ -121,5 +126,5 @@ public class DeleteAction extends AbstractAction
 	}
 	
 	private JFrame parentWindow;
-	private JTree thetree;
+	private tree myTreeClass;
 }//end class DeleteAction

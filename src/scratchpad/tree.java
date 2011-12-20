@@ -64,6 +64,9 @@ public class tree extends JPanel implements KeyListener
 		
 		thetree.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,ActionEvent.CTRL_MASK),"delete");
 		thetree.getActionMap().put("delete",deleteAction);
+		
+		
+		thetree.getActionMap().put("cut",cutAction);
 
 		newAction = new NewAction("New","new","New Document",createImageIcon("/new.gif","new icon"),KeyEvent.VK_N,
 							 KeyStroke.getKeyStroke(KeyEvent.VK_N,ActionEvent.CTRL_MASK));
@@ -77,11 +80,11 @@ public class tree extends JPanel implements KeyListener
 		
 		findAction = new FindAction("Find","find",KeyEvent.VK_F,
 								KeyStroke.getKeyStroke(KeyEvent.VK_F,ActionEvent.CTRL_MASK));
-		cutAction = new CutAction("Cut",createImageIcon("/cut.gif","cut icon"),"save",KeyEvent.VK_T,
+		cutAction = new CutAction("Cut",createImageIcon("/cut.gif","cut icon"),"cut",KeyEvent.VK_T,
 								KeyStroke.getKeyStroke(KeyEvent.VK_X,ActionEvent.CTRL_MASK));
-		copyAction = new CopyAction("Copy",createImageIcon("/copy.gif","copy icon"),"save",KeyEvent.VK_C,
+		copyAction = new CopyAction("Copy",createImageIcon("/copy.gif","copy icon"),"copy",KeyEvent.VK_C,
 								KeyStroke.getKeyStroke(KeyEvent.VK_C,ActionEvent.CTRL_MASK));
-		pasteAction = new PasteAction("Paste",createImageIcon("/paste.gif","paste icon"),"save",KeyEvent.VK_P,
+		pasteAction = new PasteAction("Paste",createImageIcon("/paste.gif","paste icon"),"paste",KeyEvent.VK_P,
 								KeyStroke.getKeyStroke(KeyEvent.VK_V,ActionEvent.CTRL_MASK));
 		
 		saveArticleAction = new SaveArticleAction("Save Article","save article","Save Article",createImageIcon("/saveart.jpg","save article icon"));
@@ -90,7 +93,7 @@ public class tree extends JPanel implements KeyListener
 								KeyStroke.getKeyStroke(KeyEvent.VK_F2,0));
 		addNodeAction = new AddNodeAction("Add Item","additem","Add Item",createImageIcon("/newnode.jpg"," icon"),
 								KeyStroke.getKeyStroke(KeyEvent.VK_INSERT,ActionEvent.CTRL_MASK));
-		deleteAction = new DeleteAction(parentWindow,thetree,"Delete","delete","Delete",createImageIcon("/del.jpg","delete icon"),
+		deleteAction = new DeleteAction(parentWindow,this,"Delete","delete","Delete",createImageIcon("/del.jpg","delete icon"),
 								KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,ActionEvent.CTRL_MASK));
 		moveUpAction = new MoveUpAction("Move Node Up","move up","Move Up",createImageIcon("/moveup.jpg","move up icon"),
 								KeyStroke.getKeyStroke(KeyEvent.VK_U,ActionEvent.ALT_MASK));
@@ -311,6 +314,10 @@ public class tree extends JPanel implements KeyListener
 	{
 		return fileSaved;
 	}
+	public JTree getTree()
+	{
+		return thetree;
+	}
 		
 	private JFrame parentWindow;
 	private JTree thetree;
@@ -433,9 +440,20 @@ public class tree extends JPanel implements KeyListener
 		}
 		public void actionPerformed(ActionEvent e)
 		{
-			System.out.println("with the new actions stuff,  " + e.getActionCommand());
-		}
-	}
+			//System.out.println("with the new actions stuff,  " + e.getActionCommand());
+			//System.out.println("delete?,  " + e.getActionCommand());
+			DefaultTreeModel treeModel = (DefaultTreeModel)thetree.getModel();
+			int j;
+			DefaultMutableTreeNode selectedNode = null;
+			TreePath selectedNodePath = thetree.getSelectionPath();
+			if (selectedNodePath != null)
+			{
+				selectedNode = (DefaultMutableTreeNode)(selectedNodePath.getLastPathComponent());
+				System.out.println("change color of " + selectedNode.toString());
+				previousSelectedNode = selectedNode;
+			}
+		}//end actionPerformed
+	}//end CutAction class
 	public class CopyAction extends AbstractAction
 	{
 		public CopyAction(String text, ImageIcon icon,String desc, int mnemonic,KeyStroke accelerator)
