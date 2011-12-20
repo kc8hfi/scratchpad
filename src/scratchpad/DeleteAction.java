@@ -29,10 +29,11 @@ import javax.sound.sampled.*;
 
 public class DeleteAction extends AbstractAction
 {
-	public DeleteAction(JFrame p,JTree t,String text, ImageIcon icon,String desc, KeyStroke accelerator)
+	public DeleteAction(JFrame p,JTree t,String text, String actionCmd,String toolTip,ImageIcon icon,KeyStroke accelerator)
 	{
 		super(text,icon); //text is the actual name
-		putValue(SHORT_DESCRIPTION, desc); //used for tooltip text
+		putValue(ACTION_COMMAND_KEY,actionCmd);
+		putValue(SHORT_DESCRIPTION, toolTip); //used for tooltip text
 		putValue(ACCELERATOR_KEY,accelerator);
 		
 		thetree = t;

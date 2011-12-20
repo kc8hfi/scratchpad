@@ -76,27 +76,26 @@ public class tree extends JPanel implements KeyListener
 							   KeyStroke.getKeyStroke(KeyEvent.VK_Q,ActionEvent.CTRL_MASK));
 		
 		findAction = new FindAction("Find","find",KeyEvent.VK_F,
-							   KeyStroke.getKeyStroke(KeyEvent.VK_F,ActionEvent.CTRL_MASK));
+								KeyStroke.getKeyStroke(KeyEvent.VK_F,ActionEvent.CTRL_MASK));
 		cutAction = new CutAction("Cut",createImageIcon("/cut.gif","cut icon"),"save",KeyEvent.VK_T,
-							 KeyStroke.getKeyStroke(KeyEvent.VK_X,ActionEvent.CTRL_MASK));
+								KeyStroke.getKeyStroke(KeyEvent.VK_X,ActionEvent.CTRL_MASK));
 		copyAction = new CopyAction("Copy",createImageIcon("/copy.gif","copy icon"),"save",KeyEvent.VK_C,
-							   KeyStroke.getKeyStroke(KeyEvent.VK_C,ActionEvent.CTRL_MASK));
+								KeyStroke.getKeyStroke(KeyEvent.VK_C,ActionEvent.CTRL_MASK));
 		pasteAction = new PasteAction("Paste",createImageIcon("/paste.gif","paste icon"),"save",KeyEvent.VK_P,
 								KeyStroke.getKeyStroke(KeyEvent.VK_V,ActionEvent.CTRL_MASK));
 		
-		saveArticleAction = new SaveArticleAction("Save Article",createImageIcon("/saveart.jpg","save article icon"),
-										  "save article");
+		saveArticleAction = new SaveArticleAction("Save Article","save article","Save Article",createImageIcon("/saveart.jpg","save article icon"));
 		saveArticleAction.setEnabled(false);
-		renameAction = new RenameAction("Rename",createImageIcon("/chname.jpg","rename icon"),"rename",
-								  KeyStroke.getKeyStroke(KeyEvent.VK_F2,0));
-		addNodeAction = new AddNodeAction("Add Item",createImageIcon("/newnode.jpg"," icon"),"add item",
-										KeyStroke.getKeyStroke(KeyEvent.VK_INSERT,ActionEvent.CTRL_MASK));
-		deleteAction = new DeleteAction(parentWindow,thetree,"Delete",createImageIcon("/del.jpg","delete icon"),"delete",
-								  KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,ActionEvent.CTRL_MASK));
-		moveUpAction = new MoveUpAction("Move Node Up",createImageIcon("/moveup.jpg","move up icon"),"move up",
-								  KeyStroke.getKeyStroke(KeyEvent.VK_U,ActionEvent.ALT_MASK));
-		moveDownAction = new MoveDownAction("Move Node Down",createImageIcon("/movedown.jpg","move down icon"),
-									 "move down",KeyStroke.getKeyStroke(KeyEvent.VK_D,ActionEvent.ALT_MASK));
+		renameAction = new RenameAction("Rename","rename","Rename",createImageIcon("/chname.jpg","rename icon"),
+								KeyStroke.getKeyStroke(KeyEvent.VK_F2,0));
+		addNodeAction = new AddNodeAction("Add Item","additem","Add Item",createImageIcon("/newnode.jpg"," icon"),
+								KeyStroke.getKeyStroke(KeyEvent.VK_INSERT,ActionEvent.CTRL_MASK));
+		deleteAction = new DeleteAction(parentWindow,thetree,"Delete","delete","Delete",createImageIcon("/del.jpg","delete icon"),
+								KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,ActionEvent.CTRL_MASK));
+		moveUpAction = new MoveUpAction("Move Node Up","move up","Move Up",createImageIcon("/moveup.jpg","move up icon"),
+								KeyStroke.getKeyStroke(KeyEvent.VK_U,ActionEvent.ALT_MASK));
+		moveDownAction = new MoveDownAction("Move Node Down","move down","Move Down",createImageIcon("/movedown.jpg","move down icon"),
+								KeyStroke.getKeyStroke(KeyEvent.VK_D,ActionEvent.ALT_MASK));
 
 		contentsAction = new ContentsAction("Contents", "contents",KeyStroke.getKeyStroke(KeyEvent.VK_F1,0));
 		
@@ -245,7 +244,9 @@ public class tree extends JPanel implements KeyListener
 				toolBar.addSeparator();
 			}
 			if (button.getActionCommand().equals("new") || 
-				button.getActionCommand().equals("save")
+				button.getActionCommand().equals("save") ||
+				button.getActionCommand().equals("delete") ||
+				button.getActionCommand().equals("move down")
 			)
 			{
 				toolBar.add(button);
@@ -466,10 +467,11 @@ public class tree extends JPanel implements KeyListener
 
 	public class SaveArticleAction extends AbstractAction
 	{
-		public SaveArticleAction(String text, ImageIcon icon,String desc)
+		public SaveArticleAction(String text, String actionCmd,String toolTip,ImageIcon icon)
 		{
 			super(text,icon); //text is the actual name
-			putValue(SHORT_DESCRIPTION, desc); //used for tooltip text
+			putValue(ACTION_COMMAND_KEY,actionCmd);
+			putValue(SHORT_DESCRIPTION, toolTip); //used for tooltip text
 		}
 		public void actionPerformed(ActionEvent e)
 		{
@@ -491,10 +493,11 @@ public class tree extends JPanel implements KeyListener
 	
 	public class RenameAction extends AbstractAction
 	{
-		public RenameAction(String text, ImageIcon icon,String desc,KeyStroke accelerator)
+		public RenameAction(String text, String actionCmd,String toolTip,ImageIcon icon,KeyStroke accelerator)
 		{
 			super(text,icon); //text is the actual name
-			putValue(SHORT_DESCRIPTION, desc); //used for tooltip text
+			putValue(ACTION_COMMAND_KEY,actionCmd);
+			putValue(SHORT_DESCRIPTION, toolTip); //used for tooltip text
 			putValue(ACCELERATOR_KEY,accelerator);
 		}
 		public void actionPerformed(ActionEvent e)
@@ -524,10 +527,11 @@ public class tree extends JPanel implements KeyListener
 	}
 	public class AddNodeAction extends AbstractAction
 	{
-		public AddNodeAction(String text, ImageIcon icon,String desc, KeyStroke accelerator)
+		public AddNodeAction(String text, String actionCmd,String toolTip,ImageIcon icon,KeyStroke accelerator)
 		{
 			super(text,icon); //text is the actual name
-			putValue(SHORT_DESCRIPTION, desc); //used for tooltip text
+			putValue(ACTION_COMMAND_KEY,actionCmd);
+			putValue(SHORT_DESCRIPTION, toolTip); //used for tooltip text
 			putValue(ACCELERATOR_KEY,accelerator);
 		}
 		public void actionPerformed(ActionEvent e)
@@ -569,10 +573,11 @@ public class tree extends JPanel implements KeyListener
 	
 	public class MoveUpAction extends AbstractAction
 	{
-		public MoveUpAction(String text, ImageIcon icon,String desc,KeyStroke accelerator)
+		public MoveUpAction(String text, String actionCmd,String toolTip,ImageIcon icon,KeyStroke accelerator)
 		{
 			super(text,icon); //text is the actual name
-			putValue(SHORT_DESCRIPTION, desc); //used for tooltip text
+			putValue(ACTION_COMMAND_KEY,actionCmd);
+			putValue(SHORT_DESCRIPTION, toolTip); //used for tooltip text
 			putValue(ACCELERATOR_KEY,accelerator);
 		}
 		public void actionPerformed(ActionEvent e)
@@ -598,10 +603,11 @@ public class tree extends JPanel implements KeyListener
 	}
 	public class MoveDownAction extends AbstractAction
 	{
-		public MoveDownAction(String text, ImageIcon icon,String desc,KeyStroke accelerator)
+		public MoveDownAction(String text, String actionCmd,String toolTip,ImageIcon icon,KeyStroke accelerator)
 		{
 			super(text,icon); //text is the actual name
-			putValue(SHORT_DESCRIPTION, desc); //used for tooltip text
+			putValue(ACTION_COMMAND_KEY,actionCmd);
+			putValue(SHORT_DESCRIPTION, toolTip); //used for tooltip text
 			putValue(ACCELERATOR_KEY,accelerator);
 		}
 		public void actionPerformed(ActionEvent e)
