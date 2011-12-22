@@ -72,6 +72,7 @@ public class About extends JDialog
 	public void display()
 	{
 		d.pack();
+		d.setSize(500,500);
 		d.setVisible(true);
 	}
 	
