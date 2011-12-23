@@ -356,6 +356,8 @@ public class tree extends JPanel implements KeyListener
 			System.out.println("with the new actions stuff,  " + e.getActionCommand());
 			System.out.println("empty the table model, and clear the jtree");
 			System.out.println(Integer.toString(treeModel.getChildCount()));
+System.out.println("someting is trigering hte save dialog box");
+
 
 			//DefaultMutableTreeNode newTree = new DefaultMutableTreeNode(new DataInfo("new tree","brand new tree"));
 			//treeModel.setRoot(newTree);
