@@ -21,6 +21,11 @@ package scratchpad;
 
 public class DataInfo
 {
+	public DataInfo ()
+	{
+		name = "no name";
+		data = "no data";
+	}
 	public DataInfo (String n, String d)
 	{
 		name = n;
