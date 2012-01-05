@@ -19,6 +19,8 @@ public class scratchpad
 		
 		//create the toolbar
 		p.createToolBar();
+		
+		//create the menu bar
 		thepad.setJMenuBar(p.createMenuBar());
 		
 		thepad.pack();
