@@ -40,22 +40,28 @@ public class MoveDownAction extends AbstractAction
 	}
 	public void actionPerformed(ActionEvent e)
 	{
-		System.out.println("with the new actions stuff,  " + e.getActionCommand());
+		//System.out.println("with the new actions stuff,  " + e.getActionCommand());
 		DefaultMutableTreeNode selectedNode = null;
+		JTree thetree = myTree.getTree();
+		DefaultTreeModel treeModel = (DefaultTreeModel)thetree.getModel();
 		TreePath selectedNodePath = thetree.getSelectionPath();
+		DefaultMutableTreeNode root = (DefaultMutableTreeNode)treeModel.getRoot();
 		if (selectedNodePath != null)
 		{
 			selectedNode = (DefaultMutableTreeNode)(selectedNodePath.getLastPathComponent());
 			//System.out.println(selectedNode.toString());
-			DefaultMutableTreeNode selectedNodeParent = (DefaultMutableTreeNode)selectedNode.getParent();
-			//System.out.println("parent:"+selectedNodeParent.toString());
-			int index = treeModel.getIndexOfChild(selectedNodeParent,selectedNode);
-			if (index < (treeModel.getChildCount(selectedNodeParent)-1) )
+			if (!root.toString().equals(selectedNode.toString()))
 			{
-				//System.out.println("move the node");
-				treeModel.removeNodeFromParent(selectedNode);
-				treeModel.insertNodeInto(selectedNode,selectedNodeParent,index+1);
-				fileSaved = 0;
+				DefaultMutableTreeNode selectedNodeParent = (DefaultMutableTreeNode)selectedNode.getParent();
+				//System.out.println("parent:"+selectedNodeParent.toString());
+				int index = treeModel.getIndexOfChild(selectedNodeParent,selectedNode);
+				if (index < (treeModel.getChildCount(selectedNodeParent)-1) )
+				{
+					//System.out.println("move the node");
+					treeModel.removeNodeFromParent(selectedNode);
+					treeModel.insertNodeInto(selectedNode,selectedNodeParent,index+1);
+					myTree.setFileSaved(0);
+				}
 			}
 		}//no selected node
 	}//end actionPerformed

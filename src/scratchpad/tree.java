@@ -106,12 +106,12 @@ public class tree extends JPanel implements KeyListener
 								KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,ActionEvent.CTRL_MASK));
 		moveUpAction = new MoveUpAction(this,"Move Node Up","move up","Move Up",createImageIcon("/moveup.jpg","move up icon"),
 								KeyStroke.getKeyStroke(KeyEvent.VK_U,ActionEvent.ALT_MASK));
-		moveDownAction = new MoveDownAction("Move Node Down","move down","Move Down",createImageIcon("/movedown.jpg","move down icon"),
+		moveDownAction = new MoveDownAction(this,"Move Node Down","move down","Move Down",createImageIcon("/movedown.jpg","move down icon"),
 								KeyStroke.getKeyStroke(KeyEvent.VK_D,ActionEvent.ALT_MASK));
 
 		contentsAction = new ContentsAction("Contents", "contents",KeyStroke.getKeyStroke(KeyEvent.VK_F1,0));
 		
-		aboutAction = new AboutAction("About", "about","About Scratchpad",KeyStroke.getKeyStroke(KeyEvent.VK_B,ActionEvent.CTRL_MASK));
+		aboutAction = new AboutAction(parentWindow,"About", "about","About Scratchpad",KeyStroke.getKeyStroke(KeyEvent.VK_B,ActionEvent.CTRL_MASK));
 
 		JScrollPane treeView = new JScrollPane(thetree);
 	
@@ -467,6 +467,22 @@ public class tree extends JPanel implements KeyListener
 	private JPopupMenu popup;
 	private PopupListener popupListener;
 	
+	
+	 void populate() 
+	 {
+
+		DefaultMutableTreeNode a = new DefaultMutableTreeNode(new DataInfo("Apple","this is an apple"));
+		treeModel.insertNodeInto(a, rootNode, rootNode.getChildCount());
+
+		DefaultMutableTreeNode m = new DefaultMutableTreeNode(new DataInfo("Mango","this is a mango"));
+		treeModel.insertNodeInto(m, rootNode, rootNode.getChildCount());
+
+		DefaultMutableTreeNode g = new DefaultMutableTreeNode(new DataInfo("Guava","this is something"));
+		treeModel.insertNodeInto(g, rootNode, rootNode.getChildCount());
+
+		thetree.expandPath(new TreePath(rootNode.getPath()));
+
+	}
 
 
 	public class FindAction extends AbstractAction
@@ -486,60 +502,6 @@ public class tree extends JPanel implements KeyListener
 		}
 	}	
 
-
-
-	
-
-
-	
-	 void populate() {
-	 
-	 DefaultMutableTreeNode a = new DefaultMutableTreeNode(new DataInfo("Apple","this is an apple"));
-	 treeModel.insertNodeInto(a, rootNode, rootNode.getChildCount());
-	 
-	 DefaultMutableTreeNode m = new DefaultMutableTreeNode(new DataInfo("Mango","this is a mango"));
-	 treeModel.insertNodeInto(m, rootNode, rootNode.getChildCount());
- 
-	 DefaultMutableTreeNode g = new DefaultMutableTreeNode(new DataInfo("Guava","this is something"));
-	 treeModel.insertNodeInto(g, rootNode, rootNode.getChildCount());
-	 
-	 thetree.expandPath(new TreePath(rootNode.getPath()));
- 
-	}
-	
-
-	public class MoveDownAction extends AbstractAction
-	{
-		public MoveDownAction(String text, String actionCmd,String toolTip,ImageIcon icon,KeyStroke accelerator)
-		{
-			super(text,icon); //text is the actual name
-			putValue(ACTION_COMMAND_KEY,actionCmd);
-			putValue(SHORT_DESCRIPTION, toolTip); //used for tooltip text
-			putValue(ACCELERATOR_KEY,accelerator);
-		}
-		public void actionPerformed(ActionEvent e)
-		{
-			System.out.println("with the new actions stuff,  " + e.getActionCommand());
-			DefaultMutableTreeNode selectedNode = null;
-			TreePath selectedNodePath = thetree.getSelectionPath();
-			if (selectedNodePath != null)
-			{
-				selectedNode = (DefaultMutableTreeNode)(selectedNodePath.getLastPathComponent());
-				//System.out.println(selectedNode.toString());
-				DefaultMutableTreeNode selectedNodeParent = (DefaultMutableTreeNode)selectedNode.getParent();
-				//System.out.println("parent:"+selectedNodeParent.toString());
-				int index = treeModel.getIndexOfChild(selectedNodeParent,selectedNode);
-				if (index < (treeModel.getChildCount(selectedNodeParent)-1) )
-				{
-					//System.out.println("move the node");
-					treeModel.removeNodeFromParent(selectedNode);
-					treeModel.insertNodeInto(selectedNode,selectedNodeParent,index+1);
-					fileSaved = 0;
-				}
-			}//no selected node
-		}//end actionPerformed
-	}//end class MoveDownAction
-	
 	public class ContentsAction extends AbstractAction
 	{
 		public ContentsAction(String text, String desc,KeyStroke accelerator)
@@ -553,23 +515,7 @@ public class tree extends JPanel implements KeyListener
 			System.out.println("show the help files,  " + e.getActionCommand());
 		}
 	}
-	public class AboutAction extends AbstractAction
-	{
-		//(text,action command, tooltip,keystrokc
-		public AboutAction(String text, String cmd,String toolTip,KeyStroke accelerator)
-		{
-			super(text); //text is the actual name
-			putValue(ACTION_COMMAND_KEY,cmd);	//set action command
-			putValue(SHORT_DESCRIPTION, toolTip); //used for tooltip text
-			putValue(ACCELERATOR_KEY,accelerator);
-		}
-		public void actionPerformed(ActionEvent e)
-		{
-			//System.out.println("show the about dialog box" + e.getActionCommand());
-			About about = new About(parentWindow);
-			about.display();
-		}
-	}
+
 	
 	public class MyListener implements TreeModelListener
 	{
