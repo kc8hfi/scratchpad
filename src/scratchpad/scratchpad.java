@@ -10,10 +10,12 @@ public class scratchpad
 	{
 		System.out.println("hello people");
 		JFrame thepad = new JFrame();
-		thepad.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		thepad.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		
 		tree p = new tree(thepad);
 		thepad.setContentPane(p);
+		
+		thepad.addWindowListener(new MyWindowListener());
 		
 		//create the toolbar
 		p.createToolBar();
@@ -23,4 +25,5 @@ public class scratchpad
 		thepad.setMinimumSize(new Dimension(500,100));
 		thepad.setVisible(true);
 	}
+	
 }//end scratchpad class

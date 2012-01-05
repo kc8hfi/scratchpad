@@ -21,6 +21,7 @@ package scratchpad;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.Window;
 import javax.swing.*;
 import javax.swing.JTree;
 import javax.swing.tree.*;
@@ -39,6 +40,7 @@ public class tree extends JPanel implements KeyListener
 		setLayout(new BorderLayout());
 		
 		nodeCount = 0;
+		moveCount = 1;
 		
 		articleSaved = 1;	//at the beginning,  everything is saved
 		fileSaved = 1;		//at the beginning,  everything is saved
@@ -72,13 +74,13 @@ public class tree extends JPanel implements KeyListener
 
 		newAction = new NewAction(parentWindow,this,"New","new","New Document",createImageIcon("/new.gif","new icon"),KeyEvent.VK_N,
 							 KeyStroke.getKeyStroke(KeyEvent.VK_N,ActionEvent.CTRL_MASK));
-		openAction = new OpenAction("Open","open","Open Document",createImageIcon("/open.gif","open icon"),
+		openAction = new OpenAction(parentWindow,this,"Open","open","Open Document",createImageIcon("/open.gif","open icon"),
 							   KeyEvent.VK_O,KeyStroke.getKeyStroke(KeyEvent.VK_O,ActionEvent.CTRL_MASK));
-		saveAction = new SaveAction("Save","save","Save Document",createImageIcon("/save.gif","save icon"),
+		saveAction = new SaveAction(this,"Save","save","Save Document",createImageIcon("/save.gif","save icon"),
 							   KeyEvent.VK_S,KeyStroke.getKeyStroke(KeyEvent.VK_S,ActionEvent.CTRL_MASK));
 		saveAction.setEnabled(false);
-		saveAsAction = new SaveAsAction("Save As","save as");
-		quitAction = new QuitAction("Quit","quit",KeyEvent.VK_Q,
+		saveAsAction = new SaveAsAction(parentWindow,this,"Save As","save as");
+		quitAction = new QuitAction(parentWindow,"Quit","quit",KeyEvent.VK_Q,
 							   KeyStroke.getKeyStroke(KeyEvent.VK_Q,ActionEvent.CTRL_MASK));
 		
 		findAction = new FindAction("Find","find",KeyEvent.VK_F,
@@ -89,6 +91,10 @@ public class tree extends JPanel implements KeyListener
 								KeyStroke.getKeyStroke(KeyEvent.VK_C,ActionEvent.CTRL_MASK));
 		pasteAction = new PasteAction("Paste",createImageIcon("/paste.gif","paste icon"),"paste",KeyEvent.VK_P,
 								KeyStroke.getKeyStroke(KeyEvent.VK_V,ActionEvent.CTRL_MASK));
+		pasteAction.setEnabled(false);
+		pasteSiblingAction = new PasteSiblingAction("Paste Sibling","paste sibling",createImageIcon("/paste.gif","paste icon"),"Paste as Sibling",
+								KeyStroke.getKeyStroke(KeyEvent.VK_O,ActionEvent.CTRL_MASK));
+		pasteSiblingAction.setEnabled(false);
 		
 		saveArticleAction = new SaveArticleAction("Save Article","save article","Save Article",createImageIcon("/saveart.jpg","save article icon"));
 		saveArticleAction.setEnabled(false);
@@ -167,7 +173,7 @@ public class tree extends JPanel implements KeyListener
 		JMenu editMenu = new JMenu("Edit");
 		editMenu.setMnemonic(KeyEvent.VK_E);
 		
-		Action [] editActions = {findAction,cutAction,copyAction,pasteAction};
+		Action [] editActions = {findAction,cutAction,copyAction,pasteAction,pasteSiblingAction};
 		for(int i=0;i<editActions.length;i++)
 		{
 			item = new JMenuItem(editActions[i]);
@@ -220,13 +226,12 @@ public class tree extends JPanel implements KeyListener
 			}
 		}//end loop
 
-
 		menuBar.add(fileMenu);
 		menuBar.add(editMenu);
 		menuBar.add(toolsMenu);
 		menuBar.add(helpMenu);
 		return menuBar;
-	}
+	}//end createMenuBar
 	
 	public void createToolBar()
 	{
@@ -298,7 +303,7 @@ public class tree extends JPanel implements KeyListener
 	public void keyReleased(KeyEvent e) 
 	{
 	}
-		
+	
 	public void setArticleSaved(int i)
 	{
 		articleSaved = i;
@@ -322,12 +327,39 @@ public class tree extends JPanel implements KeyListener
 	{
 		return thetree;
 	}
+	
+	public void setFileName(String s)
+	{
+		theFile = s;
+	}
+	
+	public String getFileName()
+	{
+		return theFile;
+	}
+	
+	public JFrame getParentWindow()
+	{
+		return parentWindow;
+	}
+	
+	public void enablePaste()
+	{
+		pasteAction.setEnabled(true);
+		pasteSiblingAction.setEnabled(true);
+	}
+	
+	public void disablePaste()
+	{
+		pasteAction.setEnabled(false);
+		pasteSiblingAction.setEnabled(false);
+	}
 		
 	private JFrame parentWindow;
 	private JTree thetree;
 	private JTextPane textPane;
 	private Action newAction,openAction,saveAction,saveAsAction,quitAction;
-	private Action findAction,cutAction,copyAction,pasteAction;
+	private Action findAction,cutAction,copyAction,pasteAction,pasteSiblingAction;
 	private Action saveArticleAction,renameAction,addNodeAction,deleteAction,
 				moveUpAction,moveDownAction;
 	private Action contentsAction,aboutAction;
@@ -337,8 +369,10 @@ public class tree extends JPanel implements KeyListener
 	private DataInfo item;
 
 	private int nodeCount;	//add this number to the name of the newly created nodes by default
+	private int moveCount;	//add this number when pasting copied nodes
 	
 	private DefaultMutableTreeNode previousSelectedNode;
+	private DefaultMutableTreeNode movingNode;
 	
 	private int articleSaved;	//keeps track if the article is saved or not
 	private int fileSaved;		//keeps track if the file is saved or not
@@ -347,219 +381,8 @@ public class tree extends JPanel implements KeyListener
 	
 	
 	
-	public class OpenAction extends AbstractAction
-	{
-		public OpenAction(String text, String actionCmd,String toolTip,ImageIcon icon,
-					   int mnemonic,KeyStroke accelerator)
-		{
-			super(text,icon); //text is the actual name
-			putValue(ACTION_COMMAND_KEY,actionCmd);	//action command
-			putValue(SHORT_DESCRIPTION, toolTip); //used for tooltip text
-			putValue(MNEMONIC_KEY, mnemonic);
-			putValue(ACCELERATOR_KEY,accelerator);
-		}
-		public void actionPerformed(ActionEvent e)
-		{
-			//System.out.println("with the new actions stuff,  " + e.getActionCommand());
-			JFileChooser filePicker = new JFileChooser();
-			int returnValue = filePicker.showOpenDialog(parentWindow);
-			if (returnValue == filePicker.APPROVE_OPTION)
-			{
-				System.out.println("they clicked ok");
-				File f = filePicker.getSelectedFile();
-				//System.out.println(f.getName());
-				//System.out.println("empty the tree first");
-				while(treeModel.getChildCount(rootNode) != 0)
-				{
-					DefaultMutableTreeNode n = (DefaultMutableTreeNode)treeModel.getChild(rootNode,0);
-					//System.out.println(n.toString());
-					treeModel.removeNodeFromParent(n);
-				}
-				//read from the file and build a tree
-				try
-				{
-					FileInputStream finputstream = new FileInputStream(f.getPath());
-					DataInputStream in = new DataInputStream(finputstream);
-					BufferedReader br = new BufferedReader(new InputStreamReader(in));
-					String line = "";
-					line = br.readLine();	//get the first line, this is the root of the tree
-					//System.out.println("first line: " + line);
-					Csv t = new Csv();
-					ArrayList<String> firstline = t.parse(line);
-					((DataInfo)rootNode.getUserObject()).setName(firstline.get(0));	//set name
-					((DataInfo)rootNode.getUserObject()).setData(firstline.get(1));	//set name
-					
-					//get the rest of the lines now
-					while((line = br.readLine()) != null)
-					{
-						firstline = t.parse(line);
-						//root,name,data
-						DataInfo item = new DataInfo(firstline.get(1),firstline.get(2));
-						DefaultMutableTreeNode n = new DefaultMutableTreeNode(item);
-						String parentName = firstline.get(0);
-						//System.out.println("look for " + parentName);
-						//go find the parent node
-						DefaultMutableTreeNode p = search(rootNode,parentName);
-						if (p == null)
-						{
-							//System.out.println("there is no parent because p is null, so add to root");
-							//System.out.println("add " + n.toString() + " to " + rootNode.toString());
-							treeModel.insertNodeInto(n, rootNode, rootNode.getChildCount());
-						}
-						else
-						{
-							//System.out.println("add " + n.toString() + " to " + p.toString());
-							treeModel.insertNodeInto(n, p, p.getChildCount());
-						}
-					}//end loop
-					in.close();
-					theFile = f.getName();
-					
-					System.out.println("node count: " + Integer.toString(treeModel.getChildCount(rootNode)));
-					
-					TreeNode [] nodes = treeModel.getPathToRoot(rootNode);
-					TreePath path = new TreePath(nodes);
-					thetree.setSelectionPath(new TreePath(nodes));
-					
-					//System.out.println("call node structure changed");
-					treeModel.nodeStructureChanged(rootNode);
-
-					fileSaved = 1;
-				}
-				catch(Exception fileopen)
-				{
-					System.out.println("something happened with the file");
-				}
-			}//they selected a file and clicked ok
-		}//end actionPerformed
-		public DefaultMutableTreeNode search(DefaultMutableTreeNode p,String n) 
-		{ 
-			DefaultMutableTreeNode nameParent = null;
-			//TreeModel model = theTree.getModel();
-			int index = -1;
-			//DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
-			DataInfo rootInfo = (DataInfo)p.getUserObject();
-			if (rootInfo.toString().equals(n))
-			{
-				//System.out.println("we found it!!");
-				return p;
-			}
-			int childcount = treeModel.getChildCount(p);
-			for (int i=0;i<childcount;i++)
-			{
-				DefaultMutableTreeNode childNode = (DefaultMutableTreeNode)treeModel.getChild(p,i);
-				if (childNode.toString().equals(n))
-					nameParent = childNode;
-				if (treeModel.isLeaf(childNode))
-				{
-					DataInfo childInfo = (DataInfo)childNode.getUserObject();
-					if (childInfo.toString().equals(n))
-						nameParent = childNode;
-				}
-				else
-				{
-					nameParent = search(childNode,n);
-				}
-			}//end loop
-			return nameParent;
-		}//end search
-		
-	}//end OpenAction
 	
-	public class SaveAsAction extends AbstractAction
-	{
-		public SaveAsAction(String text,String desc)
-		{
-			super(text); //text is the actual name
-			putValue(SHORT_DESCRIPTION, desc); //used for tooltip text
-		}
-		public void actionPerformed(ActionEvent e)
-		{
-			System.out.println("with the new actions stuff,  " + e.getActionCommand());
-			JFileChooser filePicker = new JFileChooser();
-			int returnValue = filePicker.showSaveDialog(parentWindow);
-			if (returnValue == filePicker.APPROVE_OPTION)
-			{
-				System.out.println("they clicked ok");
-				File f = filePicker.getSelectedFile();
-				System.out.println(f.getName());
-				
-				//create a new SaveToDisk object
-				SaveToDisk saveme = new SaveToDisk(thetree,f);
-				saveme.write();
-				theFile = f.getPath();
-				fileSaved = 1;
-				
-				System.out.println("get path: " + f.getPath());
-				System.out.println("get absolute path: " + f.getAbsolutePath());
-				
-			}//they clicked ok
-		}
-	}//end class
-	public class SaveAction extends AbstractAction
-	{
-		public SaveAction(String text, String actionCmd,String toolTip,ImageIcon icon,
-					   int mnemonic, KeyStroke accelerator)
-		{
-			super(text,icon); //text is the actual name
-			putValue(ACTION_COMMAND_KEY,actionCmd);	//action command
-			putValue(SHORT_DESCRIPTION, toolTip); //used for tooltip text
-			putValue(MNEMONIC_KEY, mnemonic);
-			putValue(ACCELERATOR_KEY,accelerator);
 
-		}
-		public void actionPerformed(ActionEvent e)
-		{
-			System.out.println("with the new actions stuff,  " + e.getActionCommand());
-			if (fileSaved == 0)	//the file is not saved
-			{
-				if (theFile == "")
-				{
-					System.out.print("show the file chooser dialog to get a file first");
-					JFileChooser filePicker = new JFileChooser();
-					int returnValue = filePicker.showSaveDialog(parentWindow);
-					if (returnValue == filePicker.APPROVE_OPTION)
-					{
-						System.out.println("they clicked ok");
-						File f = filePicker.getSelectedFile();
-						System.out.println(f.getName());
-						
-						//create a new SaveToDisk object
-						SaveToDisk saveme = new SaveToDisk(thetree,f);
-						saveme.write();
-						theFile = f.getPath();
-						fileSaved = 1;
-						saveAction.setEnabled(false);
-					}//they clicked ok
-				}
-				else
-				{
-					System.out.println(theFile);
-					//create a new SaveToDisk object
-					File f = new File(theFile);
-					SaveToDisk saveme = new SaveToDisk(thetree,f);
-					saveme.write();
-
-					fileSaved = 1;
-					saveAction.setEnabled(false);
-				}
-			}//end file was not saved
-		}
-	}	
-	public class QuitAction extends AbstractAction
-	{
-		public QuitAction(String text,String desc, int mnemonic,KeyStroke accelerator)
-		{
-			super(text); //text is the actual name
-			putValue(SHORT_DESCRIPTION, desc); //used for tooltip text
-			putValue(MNEMONIC_KEY, mnemonic);
-			putValue(ACCELERATOR_KEY,accelerator);
-		}
-		public void actionPerformed(ActionEvent e)
-		{
-			System.out.println("with the new actions stuff,  " + e.getActionCommand());
-		}
-	}	
 
 	public class FindAction extends AbstractAction
 	{
@@ -573,6 +396,7 @@ public class tree extends JPanel implements KeyListener
 		public void actionPerformed(ActionEvent e)
 		{
 			System.out.println("with the new actions stuff,  " + e.getActionCommand());
+			
 		}
 	}	
 	public class CutAction extends AbstractAction
@@ -595,8 +419,13 @@ public class tree extends JPanel implements KeyListener
 			if (selectedNodePath != null)
 			{
 				selectedNode = (DefaultMutableTreeNode)(selectedNodePath.getLastPathComponent());
-				System.out.println("change color of " + selectedNode.toString());
-				previousSelectedNode = selectedNode;
+				movingNode = selectedNode;
+				treeModel.removeNodeFromParent(movingNode);
+				//gotta set the filesaved flag to false, 0
+				setFileSaved(0);
+				System.out.println("cut: " + selectedNode.toString());
+				pasteAction.setEnabled(true);
+				pasteSiblingAction.setEnabled(true);
 			}
 		}//end actionPerformed
 	}//end CutAction class
@@ -611,9 +440,33 @@ public class tree extends JPanel implements KeyListener
 		}
 		public void actionPerformed(ActionEvent e)
 		{
-			System.out.println("with the new actions stuff,  " + e.getActionCommand());
+			//System.out.println("with the new actions stuff,  " + e.getActionCommand());
+			//System.out.println("delete?,  " + e.getActionCommand());
+			DefaultTreeModel treeModel = (DefaultTreeModel)thetree.getModel();
+			int j;
+			DefaultMutableTreeNode selectedNode = null;
+			TreePath selectedNodePath = thetree.getSelectionPath();
+			if (selectedNodePath != null)
+			{
+				selectedNode = (DefaultMutableTreeNode)(selectedNodePath.getLastPathComponent());
+				System.out.println("copy child count: " + Integer.toString(selectedNode.getChildCount()));
+				DataInfo copiedInfo = (DataInfo)selectedNode.getUserObject();
+				DataInfo newCopy = new DataInfo(Integer.toString(moveCount) +" copy of " + copiedInfo.toString(),copiedInfo.getData());
+				movingNode = new DefaultMutableTreeNode(newCopy);
+				
+				
+				//movingNode = selectedNode;
+				//gotta set the filesaved flag to false, 0
+				//setFileSaved(0);
+				System.out.println("copy: " + selectedNode.toString());
+				System.out.println("child count at end: " + Integer.toString(selectedNode.getChildCount()));
+				pasteAction.setEnabled(true);
+				pasteSiblingAction.setEnabled(true);
+				moveCount++;
+			}
 		}
-	}
+	}//end CopyAction
+	
 	public class PasteAction extends AbstractAction
 	{
 		public PasteAction(String text, ImageIcon icon,String desc, int mnemonic,KeyStroke accelerator)
@@ -626,8 +479,75 @@ public class tree extends JPanel implements KeyListener
 		public void actionPerformed(ActionEvent e)
 		{
 			System.out.println("with the new actions stuff,  " + e.getActionCommand());
+			DefaultTreeModel treeModel = (DefaultTreeModel)thetree.getModel();
+			int j;
+			DefaultMutableTreeNode selectedNode = null;
+			TreePath selectedNodePath = thetree.getSelectionPath();
+			if (selectedNodePath != null)
+			{
+				selectedNode = (DefaultMutableTreeNode)(selectedNodePath.getLastPathComponent());
+// 				System.out.println("selected node: " + selectedNode.toString());
+// 				System.out.println("child count: " + Integer.toString(selectedNode.getChildCount()));
+// 				System.out.println("moving node: " + movingNode.toString());
+// 				System.out.println("insert is about to break..");
+				if (movingNode != null)
+					treeModel.insertNodeInto(movingNode,selectedNode,selectedNode.getChildCount());
+				//movingNode = selectedNode;
+				//treeModel.removeNodeFromParent(movingNode);
+				//gotta set the filesaved flag to false, 0
+				setFileSaved(0);
+				setEnabled(false);
+				System.out.println("paste : " + movingNode.toString());
+			}
 		}
-	}
+	}//end PasteAction
+	
+	public class PasteSiblingAction extends AbstractAction
+	{
+		public PasteSiblingAction(String text, String actionCmd,ImageIcon icon,String desc,KeyStroke accelerator)
+		{
+			super(text,icon); //text is the actual name
+			putValue(SHORT_DESCRIPTION, desc); //used for tooltip text
+			putValue(ACTION_COMMAND_KEY,actionCmd);
+			putValue(ACCELERATOR_KEY,accelerator);
+		}
+		public void actionPerformed(ActionEvent e)
+		{
+			System.out.println("with the new actions stuff,  " + e.getActionCommand());
+			DefaultTreeModel treeModel = (DefaultTreeModel)thetree.getModel();
+			int j;
+			DefaultMutableTreeNode selectedNode = null;
+			TreePath selectedNodePath = thetree.getSelectionPath();
+			DefaultMutableTreeNode root = (DefaultMutableTreeNode)treeModel.getRoot();
+			if (selectedNodePath != null)
+			{
+				selectedNode = (DefaultMutableTreeNode)(selectedNodePath.getLastPathComponent());
+				DefaultMutableTreeNode selectedNodeParent = (DefaultMutableTreeNode)selectedNode.getParent();
+				if (!selectedNode.toString().equals(root.toString()))
+				{
+					int index = treeModel.getIndexOfChild(selectedNodeParent,selectedNode);
+					if (movingNode != null)
+					{
+						treeModel.insertNodeInto(movingNode,selectedNodeParent,index+1);
+						setFileSaved(0);
+						setEnabled(false);
+						pasteAction.setEnabled(false);
+					}
+					System.out.println("its not the root");
+				}
+// 				System.out.println("selected node: " + selectedNode.toString());
+// 				System.out.println("child count: " + Integer.toString(selectedNode.getChildCount()));
+// 				System.out.println("moving node: " + movingNode.toString());
+// 				System.out.println("insert is about to break..");
+// 				if (movingNode != null)
+// 					treeModel.insertNodeInto(movingNode,selectedNode,selectedNode.getChildCount());
+				//movingNode = selectedNode;
+				//treeModel.removeNodeFromParent(movingNode);
+				//gotta set the filesaved flag to false, 0
+// 				System.out.println("paste : " + movingNode.toString());
+			}
+		}
+	}//end PasteAction	
 
 	public class SaveArticleAction extends AbstractAction
 	{
@@ -877,7 +797,8 @@ public class tree extends JPanel implements KeyListener
 		{
 			System.out.println("selection event: " + e.getPath());
 			DefaultMutableTreeNode node = (DefaultMutableTreeNode)e.getPath().getLastPathComponent();
-			
+			System.out.println(node.toString());
+			System.out.println("selection event children: " + Integer.toString(node.getChildCount()));
 			if (node != null && articleSaved == 1)
 			{
 				DataInfo n = (DataInfo)node.getUserObject();
