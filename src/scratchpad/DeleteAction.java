@@ -102,7 +102,7 @@ public class DeleteAction extends AbstractAction
 	{
 		try
 		{
-			URL soundFileUrl = getClass().getResource("/sounds/"+s+".wav");
+			URL soundFileUrl = getClass().getResource("/resources/sounds/"+s+".wav");
 			AudioInputStream sound = AudioSystem.getAudioInputStream(soundFileUrl);
 			DataLine.Info info = new DataLine.Info(Clip.class,sound.getFormat());
 			Clip clip = (Clip)AudioSystem.getLine(info);

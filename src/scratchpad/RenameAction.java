@@ -62,6 +62,8 @@ public class RenameAction extends AbstractAction
 				//saveAction.setEnabled(true);
 			}
 			thetree.setEditable(false);
+			//get rid of the dialog box
+			renameDialog.dispose();
 		}
 	}//end actionPerformed
 	

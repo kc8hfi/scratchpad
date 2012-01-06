@@ -83,7 +83,7 @@ public class Rename extends JDialog
 	{
 		try
 		{
-			URL soundFileUrl = getClass().getResource("/sounds/"+s+".wav");
+			URL soundFileUrl = getClass().getResource("/resources/sounds/"+s+".wav");
 			AudioInputStream sound = AudioSystem.getAudioInputStream(soundFileUrl);
 			DataLine.Info info = new DataLine.Info(Clip.class,sound.getFormat());
 			Clip clip = (Clip)AudioSystem.getLine(info);
@@ -116,6 +116,9 @@ public class Rename extends JDialog
 			{
 				//playSound("monkey");
 				playSound("bullet2");
+				//playSound("357magnum");
+				//playSound("pause");
+				
 				System.out.println("tell them to type in a name!");
 				JOptionPane.showMessageDialog(parent,"Please type in a name.","Error!",
 										JOptionPane.ERROR_MESSAGE);

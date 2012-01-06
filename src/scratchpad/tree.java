@@ -136,7 +136,7 @@ public class tree extends JPanel implements KeyListener
 	
 	protected ImageIcon createImageIcon(String path, String description)
 	{
-		URL imgUrl = getClass().getResource(path);
+		URL imgUrl = getClass().getResource("/resources"+path);
 		if (imgUrl != null)
 			return new ImageIcon(imgUrl,description);
 		else

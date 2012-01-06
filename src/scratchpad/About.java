@@ -58,7 +58,7 @@ public class About extends JDialog
 		
 		JPanel icons = new JPanel();
 		
-		String [] files = {"/javalogo.gif","/gplv3-127x51.png","/reds10.jpg"};
+		String [] files = {"/resources/javalogo.gif","/resources/gplv3-127x51.png","/resources/reds10.jpg"};
 		for (int i=0;i<files.length;i++)
 		{
 			JLabel l = new JLabel(createImageIcon(files[i]));
@@ -76,20 +76,6 @@ public class About extends JDialog
 		d.setVisible(true);
 	}
 	
-	private void icons(JPanel p)
-	{
-		//JPanel p = new JPanel();
-		//p.setLayout(new BoxLayout(p,BoxLayout.X_AXIS));
-		//p.setBackground(Color.red);
-		String [] files = {"/javalogo.gif","/gplv3-127x51.png","/gear.gif"};
-		for (int i=0;i<files.length;i++)
-		{
-			JLabel l = new JLabel(createImageIcon(files[i]), SwingConstants.LEFT);
-			p.add(l);
-		}
-		//return p;
-	}//end icons
-	
 	protected ImageIcon createImageIcon(String path)
 	{
 		URL imgUrl = getClass().getResource(path);
@@ -103,7 +89,7 @@ public class About extends JDialog
 	{
 		InputStream input = null;
 		BufferedReader reader = null;
-		String filename = "/COPYING";
+		String filename = "/resources/COPYING";
 		String string = "";
 		String line = "";
 		try
