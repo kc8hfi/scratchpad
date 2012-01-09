@@ -43,7 +43,7 @@
 	
 	<target name="run" depends="compile" description="compiles all the source into a jar file" >
 		<mkdir dir="${dist}" />
-		<copy todir="${build}/lib">
+		<copy todir="${dist}/lib">
 			<fileset file="lib/*.jar" />
 		</copy>
 		<copy todir="${build}/resources">

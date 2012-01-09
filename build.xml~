@@ -41,7 +41,7 @@
 		</javadoc>
 	</target>
 	
-	<target name="run" depends="compile" description="compiles all the source" >
+	<target name="run" depends="compile" description="compiles all the source into a jar file" >
 		<mkdir dir="${dist}" />
 		<copy todir="${build}/lib">
 			<fileset file="lib/*.jar" />
