@@ -7,7 +7,6 @@
 	<property name="build" location="build" />
 	<property name="dist" location="dist" />
 	<property name="javadoc" location="build/javadoc" />
-	
 	<property name="lib_dir" location="lib" />
 	
 	<!-- Add all the jar files in lib folder to the class path -->
@@ -42,7 +41,7 @@
 		</javadoc>
 	</target>
 	
-	<target name="run" depends="compile" description="generate an executable jar file" >
+	<target name="run" depends="compile" description="compiles all the source into a jar file" >
 		<mkdir dir="${dist}" />
 		<copy todir="${build}/lib">
 			<fileset file="lib/*.jar" />

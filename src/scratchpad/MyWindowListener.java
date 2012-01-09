@@ -27,7 +27,6 @@ import javax.swing.JOptionPane;
 
 public class MyWindowListener extends WindowAdapter
 {
-	
 	public void windowClosing(WindowEvent e) 
 	{
 		JFrame theWindow = (JFrame)e.getWindow();

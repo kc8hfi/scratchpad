@@ -109,7 +109,7 @@ public class tree extends JPanel implements KeyListener
 		moveDownAction = new MoveDownAction(this,"Move Node Down","move down","Move Down",createImageIcon("/movedown.jpg","move down icon"),
 								KeyStroke.getKeyStroke(KeyEvent.VK_D,ActionEvent.ALT_MASK));
 
-		contentsAction = new ContentsAction("Contents", "contents",KeyStroke.getKeyStroke(KeyEvent.VK_F1,0));
+		contentsAction = new ContentsAction(this,"Contents", "contents",KeyStroke.getKeyStroke(KeyEvent.VK_F1,0));
 		
 		aboutAction = new AboutAction(parentWindow,"About", "about","About Scratchpad",KeyStroke.getKeyStroke(KeyEvent.VK_B,ActionEvent.CTRL_MASK));
 
@@ -502,19 +502,7 @@ public class tree extends JPanel implements KeyListener
 		}
 	}	
 
-	public class ContentsAction extends AbstractAction
-	{
-		public ContentsAction(String text, String desc,KeyStroke accelerator)
-		{
-			super(text); //text is the actual name
-			putValue(SHORT_DESCRIPTION, desc); //used for tooltip text
-			putValue(ACCELERATOR_KEY,accelerator);
-		}
-		public void actionPerformed(ActionEvent e)
-		{
-			System.out.println("show the help files,  " + e.getActionCommand());
-		}
-	}
+	
 
 	
 	public class MyListener implements TreeModelListener
