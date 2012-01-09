@@ -52,6 +52,5 @@ public class MyWindowListener extends WindowAdapter
 			theWindow.setVisible(false);
 			theWindow.dispose();
 		}
-		//closeWindow();
 	}//end windowClosing
 }//end MyWindowListener

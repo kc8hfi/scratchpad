@@ -46,7 +46,7 @@ public class RenameAction extends AbstractAction
 		if (path != null)
 		{
 			DefaultMutableTreeNode node = (DefaultMutableTreeNode)path.getLastPathComponent();
-			Rename renameDialog = new Rename();
+			Rename renameDialog = new Rename(myTree.getParentWindow());
 			renameDialog.setName(node.toString());
 			renameDialog.setVisible(true);
 			thetree.setEditable(true);
@@ -63,7 +63,7 @@ public class RenameAction extends AbstractAction
 			}
 			thetree.setEditable(false);
 			//get rid of the dialog box
-			renameDialog.dispose();
+			//renameDialog.dispose();
 		}
 	}//end actionPerformed
 	

@@ -291,7 +291,7 @@ public class tree extends JPanel implements KeyListener
 			popup.add(item);
 		}//end loop
 		//create mouse listener
-		popupListener = new PopupListener();
+		popupListener = new PopupListener(this);
 		//add mouse listener to the tree
 		thetree.addMouseListener(popupListener);
 		popup.addMouseListener(popupListener);

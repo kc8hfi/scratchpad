@@ -28,8 +28,9 @@ import javax.sound.sampled.*;
 
 public class Rename extends JDialog
 {
-	public Rename ()
+	public Rename (JFrame f)
 	{
+		super (f,true);
 		Action okButtonAction = new OkButtonAction("Ok",this);
 		Action cancelButtonAction = new CancelButtonAction("Cancel");
 		
@@ -56,6 +57,7 @@ public class Rename extends JDialog
 		
 		setContentPane(everything);
 		setTitle("Rename Item");
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setModal(true);
 		pack();
 		setMinimumSize(new Dimension(250,150));
