@@ -31,6 +31,8 @@ public class Rename extends JDialog
 	public Rename (JFrame f)
 	{
 		super (f,true);
+
+		parentWindow = f;
 		Action okButtonAction = new OkButtonAction("Ok",this);
 		Action cancelButtonAction = new CancelButtonAction("Cancel");
 		
@@ -68,6 +70,7 @@ public class Rename extends JDialog
 	private JButton cancelButton;
 	private JLabel label;
 	private String newName;
+	private JFrame parentWindow;
 	
 	public String getName()
 	{
@@ -101,11 +104,11 @@ public class Rename extends JDialog
 
 	class OkButtonAction extends AbstractAction
 	{
-		public OkButtonAction(String t,JDialog p)
+		/*public OkButtonAction(String t,JDialog p)
 		{
 			super(t);
 			parent = p;
-		}
+		}*/
 		public void actionPerformed(ActionEvent e)
 		{
 			if (renameField.getText().equals("") != true)
@@ -122,11 +125,11 @@ public class Rename extends JDialog
 				//playSound("pause");
 				
 				System.out.println("tell them to type in a name!");
-				JOptionPane.showMessageDialog(parent,"Please type in a name.","Error!",
+				JOptionPane.showMessageDialog(parentWindow,"Please type in a name.","Error!",
 										JOptionPane.ERROR_MESSAGE);
 			}
 		}
-		private JDialog parent;
+		//private JDialog parent;
 	}
 
 	class CancelButtonAction extends AbstractAction
