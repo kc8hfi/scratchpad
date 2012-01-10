@@ -33,7 +33,7 @@ public class Rename extends JDialog
 		super (f,true);
 
 		parentWindow = f;
-		Action okButtonAction = new OkButtonAction("Ok",this);
+		Action okButtonAction = new OkButtonAction("Ok");
 		Action cancelButtonAction = new CancelButtonAction("Cancel");
 		
 		okButton = new JButton(okButtonAction);
@@ -104,11 +104,11 @@ public class Rename extends JDialog
 
 	class OkButtonAction extends AbstractAction
 	{
-		/*public OkButtonAction(String t,JDialog p)
+		public OkButtonAction(String t)
 		{
 			super(t);
-			parent = p;
-		}*/
+		}
+		
 		public void actionPerformed(ActionEvent e)
 		{
 			if (renameField.getText().equals("") != true)
