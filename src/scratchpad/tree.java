@@ -30,11 +30,13 @@ import java.net.URL;
 import javax.sound.sampled.*;
 import java.io.*;
 import java.util.*;
+import javax.help.*;
 
 public class tree extends JPanel implements KeyListener
 {
-	public tree(JFrame parentWindow)
+	public tree(JFrame pw)
 	{
+		parentWindow = pw;
 		parentWindow.setTitle("Scratchpad - untitled.txt");
 		
 		setLayout(new BorderLayout());
@@ -47,7 +49,7 @@ public class tree extends JPanel implements KeyListener
 		
 		previousSelectedNode = null;
 		
-		item = new DataInfo("untitled","nothing to see here");
+		item = new DataInfo("untitled","");
 		rootNode = new DefaultMutableTreeNode(item);
 
 		treeModel = new DefaultTreeModel(rootNode);
@@ -68,11 +70,10 @@ public class tree extends JPanel implements KeyListener
 		
 		thetree.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,ActionEvent.CTRL_MASK),"delete");
 		thetree.getActionMap().put("delete",deleteAction);
-		
-		
+				
 		thetree.getActionMap().put("cut",cutAction);
 
-		newAction = new NewAction(parentWindow,this,"New","new","New Document",createImageIcon("/new.gif","new icon"),KeyEvent.VK_N,
+		newAction = new NewAction(this,"New","new","New Document",createImageIcon("/new.gif","new icon"),KeyEvent.VK_N,
 							 KeyStroke.getKeyStroke(KeyEvent.VK_N,ActionEvent.CTRL_MASK));
 		openAction = new OpenAction(parentWindow,this,"Open","open","Open Document",createImageIcon("/open.gif","open icon"),
 							   KeyEvent.VK_O,KeyStroke.getKeyStroke(KeyEvent.VK_O,ActionEvent.CTRL_MASK));
@@ -98,7 +99,7 @@ public class tree extends JPanel implements KeyListener
 		
 		saveArticleAction = new SaveArticleAction(this,"Save Article","save article","Save Article",createImageIcon("/saveart.jpg","save article icon"));
 		saveArticleAction.setEnabled(false);
-		renameAction = new RenameAction(this,"Rename","rename","Rename",createImageIcon("/chname.jpg","rename icon"),
+		renameAction = new RenameAction(this,"Rename","rename","Rename",createImageIcon("/chname.png","rename icon"),
 								KeyStroke.getKeyStroke(KeyEvent.VK_F2,0));
 		addNodeAction = new AddNodeAction(this,"Add Item","additem","Add Item",createImageIcon("/newnode.jpg"," icon"),
 								KeyStroke.getKeyStroke(KeyEvent.VK_INSERT,ActionEvent.CTRL_MASK));
@@ -109,7 +110,7 @@ public class tree extends JPanel implements KeyListener
 		moveDownAction = new MoveDownAction(this,"Move Node Down","move down","Move Down",createImageIcon("/movedown.jpg","move down icon"),
 								KeyStroke.getKeyStroke(KeyEvent.VK_D,ActionEvent.ALT_MASK));
 
-		contentsAction = new ContentsAction(this,"Contents", "contents",KeyStroke.getKeyStroke(KeyEvent.VK_F1,0));
+		//contentsAction = new ContentsAction(this,"Contents action", "contents",KeyStroke.getKeyStroke(KeyEvent.VK_F1,0));
 		
 		aboutAction = new AboutAction(parentWindow,"About", "about","About Scratchpad",KeyStroke.getKeyStroke(KeyEvent.VK_B,ActionEvent.CTRL_MASK));
 
@@ -125,6 +126,20 @@ public class tree extends JPanel implements KeyListener
 		//create a popup menu
 		createPopupMenu();
 		
+		ClassLoader loader = getClass().getClassLoader();
+		URL url = getClass().getResource("/resources/help/myhelp.hs");
+		//System.out.println("url is: " + url);
+		try 
+		{
+			hs = new HelpSet(loader,url);
+		}
+		catch (HelpSetException hse)
+		{
+			System.out.println(hse);
+		}
+		helpBroker = hs.createHelpBroker("Main_Window");
+		
+		//helpBroker = new DefaultHelpBroker(hs);
 		//remove this line later
 		populate();
 		
@@ -172,6 +187,7 @@ public class tree extends JPanel implements KeyListener
 				fileMenu.add(item);
 			}
 		}//end loop
+		//helpBroker.enableHelpOnButton(item, "overview", hs);
 		
 		JMenu editMenu = new JMenu("Edit");
 		editMenu.setMnemonic(KeyEvent.VK_E);
@@ -192,7 +208,7 @@ public class tree extends JPanel implements KeyListener
 			}
 		}//end loop
 		
-		JMenu toolsMenu = new JMenu("Options");
+		JMenu toolsMenu = new JMenu("Tools");
 		toolsMenu.setMnemonic(KeyEvent.VK_O);
 		Action [] optionsActions = {saveArticleAction,renameAction,
 			addNodeAction,deleteAction,moveUpAction,moveDownAction
@@ -214,7 +230,13 @@ public class tree extends JPanel implements KeyListener
 
 		JMenu helpMenu = new JMenu("Help");
 		helpMenu.setMnemonic(KeyEvent.VK_O);
-		Action [] helpActions = {contentsAction,aboutAction};
+		JMenuItem t = new JMenuItem("Contents");
+		t.setToolTipText("Contents");
+		t.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1,0) );		
+		helpBroker.enableHelpOnButton(t, "overview", hs);
+		helpMenu.add(t);
+		
+		Action [] helpActions = {aboutAction};
 		for(int i=0;i<helpActions.length;i++)
 		{
 			item = new JMenuItem(helpActions[i]);
@@ -233,6 +255,7 @@ public class tree extends JPanel implements KeyListener
 		menuBar.add(editMenu);
 		menuBar.add(toolsMenu);
 		menuBar.add(helpMenu);
+		
 		return menuBar;
 	}//end createMenuBar
 	
@@ -241,6 +264,7 @@ public class tree extends JPanel implements KeyListener
 		JButton button = null;
 
 		JToolBar toolBar = new JToolBar();
+
 		add(toolBar,BorderLayout.PAGE_START);
 
 		Action [] toolbarActions = {newAction,openAction,saveAction,renameAction,addNodeAction,
@@ -276,7 +300,6 @@ public class tree extends JPanel implements KeyListener
 				toolBar.add(button);
 				//toolBar.addSeparator();
 			}*/
-			
 		}
 	}//end createToolBar
 		
@@ -440,6 +463,16 @@ public class tree extends JPanel implements KeyListener
 		nodeCount = i;
 	}
 	
+	public HelpBroker getHelpBroker()
+	{
+		return helpBroker;
+	}
+	
+	public HelpSet getHelpSet()
+	{
+		return hs;
+	}
+	
 	private JFrame parentWindow;
 	private JTree thetree;
 	private JTextPane textPane;
@@ -447,7 +480,8 @@ public class tree extends JPanel implements KeyListener
 	private Action findAction,cutAction,copyAction,pasteAction,pasteSiblingAction;
 	private Action saveArticleAction,renameAction,addNodeAction,deleteAction,
 				moveUpAction,moveDownAction;
-	private Action contentsAction,aboutAction;
+	//private Action contentsAction,aboutAction;
+	private Action aboutAction;
 	
 	private DefaultMutableTreeNode rootNode;
 	private DefaultTreeModel treeModel;
@@ -467,6 +501,9 @@ public class tree extends JPanel implements KeyListener
 	private JPopupMenu popup;
 	private PopupListener popupListener;
 	
+	private HelpSet hs;
+	//private HelpBroker helpBroker;
+	private HelpBroker helpBroker;
 	
 	 void populate() 
 	 {
@@ -530,15 +567,15 @@ public class tree extends JPanel implements KeyListener
 		
 		public void treeNodesInserted(TreeModelEvent e) 
 		{
-			System.out.println("node inserted");
+			//System.out.println("node inserted");
 		}
 		public void treeNodesRemoved(TreeModelEvent e) 
 		{
-			System.out.println("node removed");
+			//System.out.println("node removed");
 		}
 		public void treeStructureChanged(TreeModelEvent e) 
 		{
-			System.out.println("structure changed");
+			//System.out.println("structure changed");
 		}
 
 	}//end MyListener

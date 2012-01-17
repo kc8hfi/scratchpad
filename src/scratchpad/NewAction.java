@@ -33,11 +33,10 @@ import java.awt.event.ActionEvent;
 
 public class NewAction extends AbstractAction
 {
-	public NewAction(JFrame p,tree t,String text, String actionCmd,String toolTip, ImageIcon icon, 
+	public NewAction(tree t,String text, String actionCmd,String toolTip, ImageIcon icon, 
 					int mnemonic, KeyStroke accelerator)
 	{
 		super(text,icon); //text is the actual name
-		parentWindow = p;
 		myTreeClass = t;
 		putValue(ACTION_COMMAND_KEY,actionCmd);	//set the actionCommand
 		putValue(SHORT_DESCRIPTION, toolTip); //set tooltiptext
@@ -55,8 +54,8 @@ public class NewAction extends AbstractAction
 			//System.out.println(n.toString());
 			treeModel.removeNodeFromParent(n);
 		}
-		((DataInfo)rootNode.getUserObject()).setName("brand new name");
-		((DataInfo)rootNode.getUserObject()).setData("some new data");
+		((DataInfo)rootNode.getUserObject()).setName("New Document");
+		((DataInfo)rootNode.getUserObject()).setData("");
 
 		myTreeClass.setArticleSaved(1);
 		
@@ -67,10 +66,14 @@ public class NewAction extends AbstractAction
 		
 		//System.out.println("call node structure changed");
 		treeModel.nodeStructureChanged(rootNode);
-
+		
+		//set the file saved flag
 		myTreeClass.setFileSaved(0);
+		
+		//set the title
+		myTreeClass.getParentWindow().setTitle("Scratchpad - untitled");
 	}//end actionPerformed
 	
-	private JFrame parentWindow;
+	//private JFrame parentWindow;
 	private tree myTreeClass;
 }//end actionPerformed	

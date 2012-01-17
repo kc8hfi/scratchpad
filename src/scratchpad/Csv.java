@@ -46,13 +46,18 @@ public class Csv
 		char oldchar = ' ';
 		String item = "";
 		int count=1;
+		System.out.println("parse this: " + s);
 		for ( char c : arr )
 		{
+			System.out.println(c);
 			if (c == '"')
 			{
 				if (oldchar == '"')
 				{
-					item += Character.toString(c);
+					//item += Character.toString(c);
+					System.out.println("item is: " + item);
+					System.out.println("both char is a quote??");
+					list.add(item);
 				}
 				else if (length == count)
 				{
@@ -61,6 +66,8 @@ public class Csv
 					//System.out.println("item length=count: " + item);
 					list.add(item);
 				}
+				//else
+					//list.add(item);
 			}
 			else if (c == ',')
 				{

@@ -47,13 +47,15 @@ public class SaveAsAction extends AbstractAction
 			System.out.println(f.getName());
 			
 			//create a new SaveToDisk object
-			SaveToDisk saveme = new SaveToDisk(myTreeClass.getTree(),f);
+			SaveToDisk saveme = new SaveToDisk(myTreeClass,f);
 			saveme.write();
 			myTreeClass.setFileName(f.getPath());
 			myTreeClass.setFileSaved(1);
 			
-			System.out.println("get path: " + f.getPath());
-			System.out.println("get absolute path: " + f.getAbsolutePath());
+			//myTreeClass.getParentWindow().setTitle("inside save as action");
+			
+			//System.out.println("get path: " + f.getPath());
+			//System.out.println("get absolute path: " + f.getAbsolutePath());
 			
 		}//they clicked ok
 	}

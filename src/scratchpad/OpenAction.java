@@ -77,12 +77,17 @@ public class OpenAction extends AbstractAction
 				BufferedReader br = new BufferedReader(new InputStreamReader(in));
 				String line = "";
 				line = br.readLine();	//get the first line, this is the root of the tree
-				//System.out.println("first line: " + line);
+				System.out.println("first line: " + line);
 				Csv t = new Csv();
 				ArrayList<String> firstline = t.parse(line);
+				System.out.println("root node name: " +firstline.get(0));
+				System.out.println("root node text: " +firstline.get(1));
+				
 				((DataInfo)rootNode.getUserObject()).setName(firstline.get(0));	//set name
 				((DataInfo)rootNode.getUserObject()).setData(firstline.get(1));	//set name
 				
+				System.out.println("root node is ok");
+				System.out.println(rootNode);
 				//get the rest of the lines now
 				while((line = br.readLine()) != null)
 				{
@@ -96,13 +101,13 @@ public class OpenAction extends AbstractAction
 					DefaultMutableTreeNode p = search(rootNode,parentName);
 					if (p == null)
 					{
-						//System.out.println("there is no parent because p is null, so add to root");
-						//System.out.println("add " + n.toString() + " to " + rootNode.toString());
+						System.out.println("there is no parent because p is null, so add to root");
+						System.out.println("add " + n.toString() + " to " + rootNode.toString());
 						treeModel.insertNodeInto(n, rootNode, rootNode.getChildCount());
 					}
 					else
 					{
-						//System.out.println("add " + n.toString() + " to " + p.toString());
+						System.out.println("add " + n.toString() + " to " + p.toString());
 						treeModel.insertNodeInto(n, p, p.getChildCount());
 					}
 				}//end loop
@@ -119,10 +124,12 @@ public class OpenAction extends AbstractAction
 				treeModel.nodeStructureChanged(rootNode);
 
 				myTreeClass.setFileSaved(1);
+				myTreeClass.getParentWindow().setTitle("Scratchpad - " + f.getPath());
 			}
 			catch(Exception fileopen)
 			{
 				System.out.println("something happened with the file");
+				System.out.println(fileopen);
 			}
 		}//they selected a file and clicked ok
 	}//end actionPerformed

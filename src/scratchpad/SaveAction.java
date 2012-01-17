@@ -57,7 +57,7 @@ public class SaveAction extends AbstractAction
 					System.out.println(f.getName());
 					
 					//create a new SaveToDisk object
-					SaveToDisk saveme = new SaveToDisk(myTreeClass.getTree(),f);
+					SaveToDisk saveme = new SaveToDisk(myTreeClass,f);
 					saveme.write();
 					myTreeClass.setFileName(f.getPath());
 					myTreeClass.setFileSaved(1);
@@ -70,7 +70,7 @@ public class SaveAction extends AbstractAction
 				System.out.println(myTreeClass.getFileName());
 				//create a new SaveToDisk object
 				File f = new File(myTreeClass.getFileName());
-				SaveToDisk saveme = new SaveToDisk(myTreeClass.getTree(),f);
+				SaveToDisk saveme = new SaveToDisk(myTreeClass,f);
 				saveme.write();
 
 				myTreeClass.setFileSaved(1);

@@ -25,12 +25,25 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JOptionPane;
 
+import java.awt.Window;
+
 public class MyWindowListener extends WindowAdapter
 {
 	public void windowClosing(WindowEvent e) 
 	{
 		JFrame theWindow = (JFrame)e.getWindow();
 		tree panel = (tree)theWindow.getContentPane();
+		
+		//get all the windows, something is still open
+/*		Window [] windows = theWindow.getWindows();
+		for (int i=0;i<windows.length;i++)
+		{
+			JFrame t = (JFrame)windows[i];
+			System.out.println(t.getTitle());
+			System.out.println(t.getDefaultCloseOperation());
+		}*/
+		
+		
 		if (panel.getFileSaved() == 0)
 		{
 			//A pause so user can see the message before
@@ -45,12 +58,14 @@ public class MyWindowListener extends WindowAdapter
 			{
 				theWindow.setVisible(false);
 				theWindow.dispose();
+				System.exit(0);
 			}
 		}//file isn't saved
 		else
 		{
 			theWindow.setVisible(false);
 			theWindow.dispose();
+			System.exit(0);
 		}
 	}//end windowClosing
 }//end MyWindowListener

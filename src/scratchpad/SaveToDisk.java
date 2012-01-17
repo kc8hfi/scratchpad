@@ -26,9 +26,10 @@ import java.util.*;
 
 public class SaveToDisk
 {
-	public SaveToDisk (JTree t,File f)
+	public SaveToDisk (tree mt,File f)
 	{
-		theTree = t;
+		myTreeClass = mt;
+		theTree = myTreeClass.getTree();
 		theFile = f;
 	}
 	
@@ -48,6 +49,9 @@ public class SaveToDisk
 			bufferedWriter.close();
 			writer.close();
 			System.out.println("everything is closed");
+			System.out.println("already set the title " + theFile);
+			myTreeClass.getParentWindow().setTitle("Scratchpad - " + theFile);
+			
 		}
 		catch (Exception fe)
 		{
@@ -129,6 +133,7 @@ public class SaveToDisk
 	}//end FixData
 	
 	
+	private tree myTreeClass;
 	private JTree theTree;
 	private File theFile;
 	private FileWriter writer;

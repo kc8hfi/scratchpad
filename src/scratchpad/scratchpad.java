@@ -10,7 +10,8 @@ public class scratchpad
 	{
 		System.out.println("hello people");
 		JFrame thepad = new JFrame();
-		thepad.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		//thepad.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		thepad.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		tree p = new tree(thepad);
 		thepad.setContentPane(p);
