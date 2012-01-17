@@ -307,11 +307,13 @@ public class tree extends JPanel implements KeyListener
 	{
 		popup = new JPopupMenu();
 		JMenuItem item;
-		Action [] popupActions = {cutAction,copyAction,pasteAction,pasteSiblingAction};
+		Action [] popupActions = {renameAction,cutAction,copyAction,pasteAction,pasteSiblingAction};
 		for(int i=0;i<popupActions.length;i++)
 		{
 			item = new JMenuItem(popupActions[i]);
 			popup.add(item);
+			if (item.getActionCommand().equals("rename"))
+				popup.addSeparator();
 		}//end loop
 		//create mouse listener
 		popupListener = new PopupListener(this);
