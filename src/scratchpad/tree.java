@@ -101,9 +101,9 @@ public class tree extends JPanel implements KeyListener
 		saveArticleAction.setEnabled(false);
 		renameAction = new RenameAction(this,"Rename","rename","Rename",createImageIcon("/chname.png","rename icon"),
 								KeyStroke.getKeyStroke(KeyEvent.VK_F2,0));
-		addNodeAction = new AddNodeAction(this,"Add Item","additem","Add Item",createImageIcon("/newnode.jpg"," icon"),
+		addNodeAction = new AddNodeAction(this,"Add Item","additem","Add Item",createImageIcon("/newnode.png"," icon"),
 								KeyStroke.getKeyStroke(KeyEvent.VK_INSERT,ActionEvent.CTRL_MASK));
-		deleteAction = new DeleteAction(parentWindow,this,"Delete","delete","Delete",createImageIcon("/del.jpg","delete icon"),
+		deleteAction = new DeleteAction(parentWindow,this,"Delete","delete","Delete",createImageIcon("/deletenode.png","delete icon"),
 								KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,ActionEvent.CTRL_MASK));
 		moveUpAction = new MoveUpAction(this,"Move Node Up","move up","Move Up",createImageIcon("/moveup.jpg","move up icon"),
 								KeyStroke.getKeyStroke(KeyEvent.VK_U,ActionEvent.ALT_MASK));
