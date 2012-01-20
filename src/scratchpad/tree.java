@@ -84,7 +84,7 @@ public class tree extends JPanel implements KeyListener
 		quitAction = new QuitAction(parentWindow,"Quit","quit",KeyEvent.VK_Q,
 							   KeyStroke.getKeyStroke(KeyEvent.VK_Q,ActionEvent.CTRL_MASK));
 		
-		findAction = new FindAction("Find","find",KeyEvent.VK_F,
+		findAction = new FindAction(this,"Find","find",KeyEvent.VK_F,
 								KeyStroke.getKeyStroke(KeyEvent.VK_F,ActionEvent.CTRL_MASK));
 		cutAction = new CutAction(this,"Cut",createImageIcon("/cut.gif","cut icon"),"cut",KeyEvent.VK_T,
 								KeyStroke.getKeyStroke(KeyEvent.VK_X,ActionEvent.CTRL_MASK));
@@ -307,12 +307,12 @@ public class tree extends JPanel implements KeyListener
 	{
 		popup = new JPopupMenu();
 		JMenuItem item;
-		Action [] popupActions = {renameAction,cutAction,copyAction,pasteAction,pasteSiblingAction};
+		Action [] popupActions = {addNodeAction,renameAction,cutAction,copyAction,pasteAction,pasteSiblingAction};
 		for(int i=0;i<popupActions.length;i++)
 		{
 			item = new JMenuItem(popupActions[i]);
 			popup.add(item);
-			if (item.getActionCommand().equals("rename"))
+			if (item.getActionCommand().equals("rename") || item.getActionCommand().equals("additem"))
 				popup.addSeparator();
 		}//end loop
 		//create mouse listener
@@ -524,22 +524,7 @@ public class tree extends JPanel implements KeyListener
 	}
 
 
-	public class FindAction extends AbstractAction
-	{
-		public FindAction(String text, String desc, int mnemonic,KeyStroke accelerator)
-		{
-			super(text); //text is the actual name
-			
-			putValue(SHORT_DESCRIPTION, desc); //used for tooltip text
-			putValue(MNEMONIC_KEY, mnemonic);
-			putValue(ACCELERATOR_KEY,accelerator);
-		}
-		public void actionPerformed(ActionEvent e)
-		{
-			System.out.println("with the new actions stuff,  " + e.getActionCommand());
-			
-		}
-	}	
+
 
 	
 
