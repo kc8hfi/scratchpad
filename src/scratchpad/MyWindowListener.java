@@ -48,12 +48,25 @@ public class MyWindowListener extends WindowAdapter
 		{
 			//A pause so user can see the message before
 			//the window actually closes.
-			int n = JOptionPane.showConfirmDialog(theWindow,
-					"You have unsaved changed, do you really want to close?",
-					"Close Program?",
-					JOptionPane.YES_NO_OPTION
+// 			int n = JOptionPane.showConfirmDialog(theWindow,
+// 					"You have unsaved changed, do you really want to close?",
+// 					"Close Program?",
+// 					JOptionPane.YES_NO_OPTION
+// 			);
+			Object[] options = {"Yes","No"};
+			int n = JOptionPane.showOptionDialog(
+				theWindow,
+				"You have unsaved changed, do you really want to close?",
+				"Close Program?",
+				JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE,
+				null,
+				options,
+				options[1]
 			);
-			//System.out.println(Integer.toString(n));
+			
+// 			System.out.println("answer is: " + Integer.toString(n));
+// 			System.out.println("yes option: " + Integer.toString(JOptionPane.YES_OPTION));
 			if (n == JOptionPane.YES_OPTION)
 			{
 				theWindow.setVisible(false);

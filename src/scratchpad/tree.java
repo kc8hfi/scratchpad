@@ -97,7 +97,7 @@ public class tree extends JPanel implements KeyListener
 								KeyStroke.getKeyStroke(KeyEvent.VK_O,ActionEvent.CTRL_MASK));
 		pasteSiblingAction.setEnabled(false);
 		
-		saveArticleAction = new SaveArticleAction(this,"Save Article","save article","Save Article",createImageIcon("/saveart.jpg","save article icon"));
+		saveArticleAction = new SaveArticleAction(this,"Save Article","save article","Save Article",createImageIcon("/savearttest.png","save article icon"));
 		saveArticleAction.setEnabled(false);
 		renameAction = new RenameAction(this,"Rename","rename","Rename",createImageIcon("/chname.png","rename icon"),
 								KeyStroke.getKeyStroke(KeyEvent.VK_F2,0));
@@ -105,9 +105,9 @@ public class tree extends JPanel implements KeyListener
 								KeyStroke.getKeyStroke(KeyEvent.VK_INSERT,ActionEvent.CTRL_MASK));
 		deleteAction = new DeleteAction(parentWindow,this,"Delete","delete","Delete",createImageIcon("/deletenode.png","delete icon"),
 								KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,ActionEvent.CTRL_MASK));
-		moveUpAction = new MoveUpAction(this,"Move Node Up","move up","Move Up",createImageIcon("/moveup.jpg","move up icon"),
+		moveUpAction = new MoveUpAction(this,"Move Node Up","move up","Move Up",createImageIcon("/moveuptest.png","move up icon"),
 								KeyStroke.getKeyStroke(KeyEvent.VK_U,ActionEvent.ALT_MASK));
-		moveDownAction = new MoveDownAction(this,"Move Node Down","move down","Move Down",createImageIcon("/movedown.jpg","move down icon"),
+		moveDownAction = new MoveDownAction(this,"Move Node Down","move down","Move Down",createImageIcon("/movedowntest.png","move down icon"),
 								KeyStroke.getKeyStroke(KeyEvent.VK_D,ActionEvent.ALT_MASK));
 
 		//contentsAction = new ContentsAction(this,"Contents action", "contents",KeyStroke.getKeyStroke(KeyEvent.VK_F1,0));
