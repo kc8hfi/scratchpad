@@ -9,13 +9,16 @@
 	<mapID target="overview" url="overview.html" />
 	<mapID target="tree" url="tree.html" />
 	<mapID target="addnode" url="addnode.html" />
-	<mapID target="childnode" url="addnode.html#child" />
-	<mapID target="siblingnode" url="addnode.html#sibling" />
-	<mapID target="editname" url="addnode.html#name" />
+	<mapID target="rename_node" url="rename_node.html" />
+	<mapID target="delete_node" url="delete_node.html" />
+	<mapID target="move_up" url="move_up.html" />
+	<mapID target="move_down" url="move_down.html" />	
 	<mapID target="article" url="article.html" />
+	
+	
 	<mapID target="savearticle" url="article.html#savearticle" />
 	<mapID target="menu" url="article.html#toolmenu" />
-  <mapID target="rightmenu" url="article.html#rclickmenu" />
+	<mapID target="rightmenu" url="article.html#rclickmenu" />
 	<mapID target="toolbar" url="article.html#articletool" />
 	<mapID target="clicknode" url="article.html#treenode" />
 	<mapID target="deletenode" url="addnode.html#delete" />

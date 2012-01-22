@@ -25,7 +25,9 @@ import javax.swing.KeyStroke;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
-import java.util.ArrayList;
+import javax.swing.JOptionPane;
+//import java.util.ArrayList;
+
 
 public class FindAction extends AbstractAction
 {
@@ -42,7 +44,7 @@ public class FindAction extends AbstractAction
 		JTree tree;
 		System.out.println("with the new actions stuff,  " + e.getActionCommand());
 		String f = (String)JOptionPane.showInputDialog(
-			myTreeClass.getWindow(),
+			myTreeClass.getParentWindow(),
 			"What are you looking for?",
 			"Find",
 			JOptionPane.PLAIN_MESSAGE,
@@ -50,9 +52,7 @@ public class FindAction extends AbstractAction
 			null,
 			""
 		);
-		
-		
-	}
+	}//end actionPerformed
 	
 	public void traverse() 
 	{ 
@@ -62,12 +62,12 @@ public class FindAction extends AbstractAction
 		{
 			DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
 			DataInfo rootInfo = (DataInfo)root.getUserObject();
-			ArrayList<String> list = new ArrayList<String>();
+			//ArrayList<String> list = new ArrayList<String>();
 			//list.add(rootInfo.toString());
 			//list.add(FixData(rootInfo.getData()));
-			Csv makeCsvString = new Csv();
-			String s = makeCsvString.combine(list);
-			System.out.println(s);
+			//Csv makeCsvString = new Csv();
+			//String s = makeCsvString.combine(list);
+			//System.out.println(s);
 			//out.println(s);
 			walk(model,root);    
 		}
@@ -85,7 +85,7 @@ public class FindAction extends AbstractAction
 			DefaultMutableTreeNode childsParent = (DefaultMutableTreeNode)childNode.getParent();
 			DataInfo child = (DataInfo)childNode.getUserObject();
 			//DataInfo info = (DataInfo)child.getUserObject();
-			ArrayList<String> list = new ArrayList<String>();
+			//ArrayList<String> list = new ArrayList<String>();
 			if (model.isLeaf(childNode))
 			{
 				//System.out.println(child.toString());
@@ -93,9 +93,9 @@ public class FindAction extends AbstractAction
 				//list.add(childsParent.toString());
 				//list.add(child.toString());
 				//list.add(FixData(child.getData()));
-				Csv makeCsvString = new Csv();
-				String s = makeCsvString.combine(list);
-				System.out.println(s);
+				//Csv makeCsvString = new Csv();
+				//String s = makeCsvString.combine(list);
+				//System.out.println(s);
 				//out.println(s);
 			}
 			else
@@ -104,9 +104,9 @@ public class FindAction extends AbstractAction
 				//list.add(childsParent.toString());
 				//list.add(child.toString());
 				//list.add(FixData(child.getData()));
-				Csv makeCsvString = new Csv();
-				String s = makeCsvString.combine(list);
-				System.out.println(s);
+				//Csv makeCsvString = new Csv();
+				//String s = makeCsvString.combine(list);
+				//System.out.println(s);
 				//out.println(s);
 				walk(model,childNode ); 
 			}

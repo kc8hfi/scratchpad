@@ -307,7 +307,7 @@ public class tree extends JPanel implements KeyListener
 	{
 		popup = new JPopupMenu();
 		JMenuItem item;
-		Action [] popupActions = {addNodeAction,renameAction,cutAction,copyAction,pasteAction,pasteSiblingAction};
+		Action [] popupActions = {addNodeAction,renameAction,deleteAction,cutAction,copyAction,pasteAction,pasteSiblingAction};
 		for(int i=0;i<popupActions.length;i++)
 		{
 			item = new JMenuItem(popupActions[i]);

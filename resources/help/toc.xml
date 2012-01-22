@@ -5,15 +5,14 @@
 
 <toc version="1.0">
 	<tocitem text="ScratchPad Contents" image="toplevelfolder" target="beginning">
-      <tocitem text="Overview"  target="overview"/>
-	    <tocitem text="Tree" target="tree">
-			   <tocitem text="Add Node" target="addnode">
-				       <tocitem text="Child Node" target="childnode"/>
-							 <tocitem text="Sibling Node" target="siblingnode"/>
-				 </tocitem>
-				 <tocitem text="Edit Node Name" target="editname"/>
-				 <tocitem text="Delete a Node"  target="deletenode"/>
-			</tocitem>
+		<tocitem text="Overview"  target="overview"/>
+		<tocitem text="Tree" target="tree">
+			<tocitem text="Add Node" target="addnode" />
+			<tocitem text="Rename Node" target="rename_node"/>
+			<tocitem text="Delete a Node"  target="delete_node"/>
+			<tocitem text="Move a Node Up" target="move_up" />
+			<tocitem text="Move a Node Down" target="move_down" />
+		</tocitem>
 			<tocitem text="Article" target="article">
 			    <tocitem text="Save Article" target="savearticle">
 					     <tocitem text="Main Menu" target="menu"/>
