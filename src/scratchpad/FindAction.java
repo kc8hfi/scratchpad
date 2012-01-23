@@ -26,8 +26,6 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
 import javax.swing.JOptionPane;
-//import java.util.ArrayList;
-
 
 public class FindAction extends AbstractAction
 {
@@ -35,6 +33,7 @@ public class FindAction extends AbstractAction
 	{
 		super(text); //text is the actual name
 		myTreeClass = t;
+		findMe = "";
 		putValue(SHORT_DESCRIPTION, desc); //used for tooltip text
 		putValue(MNEMONIC_KEY, mnemonic);
 		putValue(ACCELERATOR_KEY,accelerator);
@@ -52,6 +51,8 @@ public class FindAction extends AbstractAction
 			null,
 			""
 		);
+		findMe = f;
+		traverse();
 	}//end actionPerformed
 	
 	public void traverse() 
@@ -62,18 +63,28 @@ public class FindAction extends AbstractAction
 		{
 			DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
 			DataInfo rootInfo = (DataInfo)root.getUserObject();
-			//ArrayList<String> list = new ArrayList<String>();
-			//list.add(rootInfo.toString());
-			//list.add(FixData(rootInfo.getData()));
-			//Csv makeCsvString = new Csv();
-			//String s = makeCsvString.combine(list);
-			//System.out.println(s);
-			//out.println(s);
-			walk(model,root);    
+			int index = rootInfo.toString().indexOf(findMe);
+			if (index < 0)	//not the root node name
+			{
+				index = rootInfo.getData().indexOf(findMe);	//search the root node's data
+				if (index < 0)	//not in the root node's data
+				{
+					System.out.println("not in the root node");
+					walk(model,root);
+				}
+				else
+				{
+					System.out.println("its in the root node's data");
+				}
+			}
+			else
+			{
+				System.out.println("its the root node name, don't search further");
+			}
 		}
 		else
 			System.out.println("Tree is empty.");
-	}
+	}//end traverse
 		
 	protected void walk(TreeModel model, DefaultMutableTreeNode o)
 	{
@@ -84,33 +95,37 @@ public class FindAction extends AbstractAction
 			DefaultMutableTreeNode childNode = (DefaultMutableTreeNode)model.getChild(o,i);
 			DefaultMutableTreeNode childsParent = (DefaultMutableTreeNode)childNode.getParent();
 			DataInfo child = (DataInfo)childNode.getUserObject();
-			//DataInfo info = (DataInfo)child.getUserObject();
-			//ArrayList<String> list = new ArrayList<String>();
 			if (model.isLeaf(childNode))
 			{
-				//System.out.println(child.toString());
-				//System.out.println(info.getData());
-				//list.add(childsParent.toString());
-				//list.add(child.toString());
-				//list.add(FixData(child.getData()));
-				//Csv makeCsvString = new Csv();
-				//String s = makeCsvString.combine(list);
-				//System.out.println(s);
-				//out.println(s);
+				int index = child.toString().indexOf(findMe);
+				if (index < 0)	//not in the nodes name
+				{
+					index = child.getData().indexOf(findMe);
+					if (index < 0 )//not in the data
+					{
+						System.out.println("not here yet");
+					}
+					else
+					{
+						System.out.println("its in the nodes data!");
+						break;
+					}
+				}
+				else
+				{
+					System.out.println("its in the nodes name!!");
+					break;
+				}
+				//System.out.println("walk if: look at the node and its data???");
 			}
 			else
 			{
-				//System.out.print(child.toString()+"--");
-				//list.add(childsParent.toString());
-				//list.add(child.toString());
-				//list.add(FixData(child.getData()));
-				//Csv makeCsvString = new Csv();
-				//String s = makeCsvString.combine(list);
-				//System.out.println(s);
-				//out.println(s);
+				//System.out.println("walk else: look at the node and its data???");
 				walk(model,childNode ); 
 			}
 		}//end loop
-	}//end walk	
+	}//end walk
+	
 	private tree myTreeClass;
-}
+	private String findMe;
+}//end FindAction
