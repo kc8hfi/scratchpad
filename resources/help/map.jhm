@@ -12,20 +12,7 @@
 	<mapID target="rename_node" url="rename_node.html" />
 	<mapID target="delete_node" url="delete_node.html" />
 	<mapID target="move_up" url="move_up.html" />
-	<mapID target="move_down" url="move_down.html" />	
+	<mapID target="move_down" url="move_down.html" />
+	<mapID target="cut_paste" url="cut_paste.html" />
 	<mapID target="article" url="article.html" />
-	
-	
-	<mapID target="savearticle" url="article.html#savearticle" />
-	<mapID target="menu" url="article.html#toolmenu" />
-	<mapID target="rightmenu" url="article.html#rclickmenu" />
-	<mapID target="toolbar" url="article.html#articletool" />
-	<mapID target="clicknode" url="article.html#treenode" />
-	<mapID target="deletenode" url="addnode.html#delete" />
-	<mapID target="mvtree" url="movetree.html"/>
-	<mapID target="cutnode" url="movetree.html#cutpaste"/>
-	<mapID target="pastechild" url="movetree.html#pastechildnode"/>
-	<mapID target="pastesibling" url="movetree.html#pastesibling"/>
-	<mapID target="moveup" url="movetree.html#nodeup"/>
-	<mapID target="movedown" url="movetree.html#nodedown"/>
 </map>

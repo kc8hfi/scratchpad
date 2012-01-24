@@ -12,21 +12,7 @@
 			<tocitem text="Delete a Node"  target="delete_node"/>
 			<tocitem text="Move a Node Up" target="move_up" />
 			<tocitem text="Move a Node Down" target="move_down" />
+			<tocitem text="Rearranging Nodes" target="cut_paste" />
 		</tocitem>
-			<tocitem text="Article" target="article">
-			    <tocitem text="Save Article" target="savearticle">
-					     <tocitem text="Main Menu" target="menu"/>
-							 <tocitem text="Right-Click Menu" target="rightmenu"/>
-							 <tocitem text="Toolbar" target="toolbar"/>
-							 <tocitem text="Different node" target="clicknode"/>
-					</tocitem>
-			</tocitem>
-			<tocitem text="Move Tree Nodes" target="mvtree">
-    			<tocitem text="Cut and Paste" target="cutnode"/>
-					<tocitem text="Child" target="pastechild"/>
-					<tocitem text="Sibling" target="pastesibling"/>
-			    <tocitem text="Up" target="moveup"/>
-					<tocitem text="Down" target="movedown"/>
-			</tocitem>
-	</tocitem>		
-</toc>				 
+		<tocitem text="Article" target="article" />
+</toc>
