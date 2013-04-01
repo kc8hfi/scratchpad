@@ -1,4 +1,4 @@
-<project name="Scratch Pad" default="run" basedir=".">
+<project name="scratchpad" default="run" basedir=".">
 	<property name="author" value="Charles Amey" />
 	<property name="main_class" value="scratchpad" />
 	
@@ -27,7 +27,7 @@
 		<mkdir dir="${build}" />
 	</target>
 	
-	<target name="compile" depends="init" description="compiles the source">
+	<target name="build" depends="init" description="compiles the source">
 		<!-- compile java code from ${src} into ${build}-->
 		<javac srcdir="${src}" destdir="${build}" includeantruntime="false" >
 			<classpath refid="build_classpath"/>
@@ -41,7 +41,7 @@
 		</javadoc>
 	</target>
 	
-	<target name="run" depends="compile" description="compiles all the source into a jar file" >
+	<target name="run" depends="build" description="compiles all the source into a jar file" >
 		<mkdir dir="${dist}" />
 		<copy todir="${dist}/lib">
 			<fileset file="lib/*.jar" />
@@ -49,17 +49,17 @@
 		<copy todir="${build}/resources">
 			<fileset dir="resources" />
 		</copy>
-		<jar jarfile="${dist}/scratchpad.jar" basedir="${build}">
+		<jar jarfile="${dist}/${ant.project.name}.jar" basedir="${build}">
 			 <manifest>
 				<attribute name="Main-Class" value="${main_class}.${main_class}" />
 				<attribute name="Class-Path" value="${manifest_classpath}" />
-
 			</manifest>
 			<!-- <fileset dir="resources" />
 			<zipfileset dir="javadoc" />
 			<fileset file="lib/javahelp-2.0.02.jar" /> -->
 		</jar>
-		
+		<java jar="${dist}/${ant.project.name}.jar" fork="true">
+		</java>
 	</target>
 	
 	<target name="everything" depends="javadoc,run" description="creates a jar file with javadocs and source code" >
@@ -71,7 +71,7 @@
 		</copy>
 			
 		<!-- create the distribution directory -->
-		<jar jarfile="${dist}/scratchpad.jar" basedir="${build}">
+		<jar jarfile="${dist}/${ant.project.name}.jar" basedir="${build}">
 			 <manifest>
 				<attribute name="Main-Class" value="${main_class}.${main_class}" />
 				<attribute name="Class-Path" value="${manifest_classpath}" />
