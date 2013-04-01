@@ -29,56 +29,56 @@ import java.awt.Window;
 
 public class MyWindowListener extends WindowAdapter
 {
-	public void windowClosing(WindowEvent e) 
-	{
-		JFrame theWindow = (JFrame)e.getWindow();
-		tree panel = (tree)theWindow.getContentPane();
-		
-		//get all the windows, something is still open
-/*		Window [] windows = theWindow.getWindows();
-		for (int i=0;i<windows.length;i++)
-		{
-			JFrame t = (JFrame)windows[i];
-			System.out.println(t.getTitle());
-			System.out.println(t.getDefaultCloseOperation());
-		}*/
-		
-		
-		if (panel.getFileSaved() == 0)
-		{
-			//A pause so user can see the message before
-			//the window actually closes.
-// 			int n = JOptionPane.showConfirmDialog(theWindow,
-// 					"You have unsaved changed, do you really want to close?",
-// 					"Close Program?",
-// 					JOptionPane.YES_NO_OPTION
-// 			);
-			Object[] options = {"Yes","No"};
-			int n = JOptionPane.showOptionDialog(
-				theWindow,
-				"You have unsaved changed, do you really want to close?",
-				"Close Program?",
-				JOptionPane.YES_NO_OPTION,
-				JOptionPane.QUESTION_MESSAGE,
-				null,
-				options,
-				options[1]
-			);
-			
-// 			System.out.println("answer is: " + Integer.toString(n));
-// 			System.out.println("yes option: " + Integer.toString(JOptionPane.YES_OPTION));
-			if (n == JOptionPane.YES_OPTION)
-			{
-				theWindow.setVisible(false);
-				theWindow.dispose();
-				System.exit(0);
-			}
-		}//file isn't saved
-		else
-		{
-			theWindow.setVisible(false);
-			theWindow.dispose();
-			System.exit(0);
-		}
-	}//end windowClosing
+     public void windowClosing(WindowEvent e) 
+     {
+          JFrame theWindow = (JFrame)e.getWindow();
+          tree panel = (tree)theWindow.getContentPane();
+          
+          //get all the windows, something is still open
+/*          Window [] windows = theWindow.getWindows();
+          for (int i=0;i<windows.length;i++)
+          {
+               JFrame t = (JFrame)windows[i];
+               System.out.println(t.getTitle());
+               System.out.println(t.getDefaultCloseOperation());
+          }*/
+          
+          
+          if (panel.getFileSaved() == 0)
+          {
+               //A pause so user can see the message before
+               //the window actually closes.
+//                int n = JOptionPane.showConfirmDialog(theWindow,
+//                          "You have unsaved changed, do you really want to close?",
+//                          "Close Program?",
+//                          JOptionPane.YES_NO_OPTION
+//                );
+               Object[] options = {"Yes","No"};
+               int n = JOptionPane.showOptionDialog(
+                    theWindow,
+                    "You have unsaved changed, do you really want to close?",
+                    "Close Program?",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    options[1]
+               );
+               
+//                System.out.println("answer is: " + Integer.toString(n));
+//                System.out.println("yes option: " + Integer.toString(JOptionPane.YES_OPTION));
+               if (n == JOptionPane.YES_OPTION)
+               {
+                    theWindow.setVisible(false);
+                    theWindow.dispose();
+                    System.exit(0);
+               }
+          }//file isn't saved
+          else
+          {
+               theWindow.setVisible(false);
+               theWindow.dispose();
+               System.exit(0);
+          }
+     }//end windowClosing
 }//end MyWindowListener

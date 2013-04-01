@@ -26,20 +26,20 @@ import javax.swing.JFrame;
 
 public class AboutAction extends AbstractAction
 {
-	//(text,action command, tooltip,keystrokc
-	public AboutAction(JFrame p,String text, String cmd,String toolTip,KeyStroke accelerator)
-	{
-		super(text); //text is the actual name
-		parentWindow = p;
-		putValue(ACTION_COMMAND_KEY,cmd);	//set action command
-		putValue(SHORT_DESCRIPTION, toolTip); //used for tooltip text
-		putValue(ACCELERATOR_KEY,accelerator);
-	}
-	public void actionPerformed(ActionEvent e)
-	{
-		//System.out.println("show the about dialog box" + e.getActionCommand());
-		About about = new About(parentWindow);
-		about.display();
-	}//end actionPerformed
-	private JFrame parentWindow;
+     //(text,action command, tooltip,keystrokc
+     public AboutAction(JFrame p,String text, String cmd,String toolTip,KeyStroke accelerator)
+     {
+          super(text); //text is the actual name
+          parentWindow = p;
+          putValue(ACTION_COMMAND_KEY,cmd);     //set action command
+          putValue(SHORT_DESCRIPTION, toolTip); //used for tooltip text
+          putValue(ACCELERATOR_KEY,accelerator);
+     }
+     public void actionPerformed(ActionEvent e)
+     {
+          //System.out.println("show the about dialog box" + e.getActionCommand());
+          About about = new About(parentWindow);
+          about.display();
+     }//end actionPerformed
+     private JFrame parentWindow;
 }//end AboutAction

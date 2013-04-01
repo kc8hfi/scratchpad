@@ -26,49 +26,49 @@ import javax.swing.JFrame;
 
 class PopupListener extends MouseAdapter
 {
-	public PopupListener(tree t)
-	{
-		myTreeClass = t;
-	}
-	public void mousePressed(MouseEvent e) 
-	{
-		maybeShowPopup(e);
-	}
+     public PopupListener(tree t)
+     {
+          myTreeClass = t;
+     }
+     public void mousePressed(MouseEvent e) 
+     {
+          maybeShowPopup(e);
+     }
 
-	public void mouseReleased(MouseEvent e)
-	{
-		maybeShowPopup(e);
-	}
+     public void mouseReleased(MouseEvent e)
+     {
+          maybeShowPopup(e);
+     }
 
-	private void maybeShowPopup(MouseEvent e)
-	{
-		if (e.isPopupTrigger()) 
-		{
-			/*		System.out.println(e.getComponent());	//jtree
-			System.out.println(e.getComponent().getParent());//jviewport
-			System.out.println(e.getComponent().getParent().getParent());//jscrollpane
-			System.out.println(e.getComponent().getParent().getParent().getParent());//jsplitpane
-			System.out.println(e.getComponent().getParent().getParent().getParent().getParent());//tree
-			System.out.println(e.getComponent().getParent().getParent().getParent().getParent().getParent());//jlayeredpane
-			System.out.println(e.getComponent().getParent().getParent().getParent().getParent().getParent().getParent());//jrootpane
-			System.out.println(e.getComponent().getParent().getParent().getParent().getParent().getParent().getParent().getParent() + "\n\n");//jframe
-			System.out.println(e.getComponent().getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent()+ "\n\n");//*/
-/*			Container last = e.getComponent().getParent();
-			Container c = e.getComponent().getParent();
-			while (c != null)
-			{
-				//System.out.println(c + "\n");
-				last = c;
-				c = c.getParent();
-			}
-			//System.out.println("this is the last one: " + last);
-			JFrame f = (JFrame)last;*/
-// 			tree myTreeClass = (tree)f.getContentPane();
-			myTreeClass.getPopupMenu().show(e.getComponent(),e.getX(),e.getY());
-			//System.out.println("this is the last one: " + myTreeClass);
-		}
-	}//end maybeShowPopup
-	
-	private tree myTreeClass;
+     private void maybeShowPopup(MouseEvent e)
+     {
+          if (e.isPopupTrigger()) 
+          {
+               /*          System.out.println(e.getComponent());     //jtree
+               System.out.println(e.getComponent().getParent());//jviewport
+               System.out.println(e.getComponent().getParent().getParent());//jscrollpane
+               System.out.println(e.getComponent().getParent().getParent().getParent());//jsplitpane
+               System.out.println(e.getComponent().getParent().getParent().getParent().getParent());//tree
+               System.out.println(e.getComponent().getParent().getParent().getParent().getParent().getParent());//jlayeredpane
+               System.out.println(e.getComponent().getParent().getParent().getParent().getParent().getParent().getParent());//jrootpane
+               System.out.println(e.getComponent().getParent().getParent().getParent().getParent().getParent().getParent().getParent() + "\n\n");//jframe
+               System.out.println(e.getComponent().getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent()+ "\n\n");//*/
+/*               Container last = e.getComponent().getParent();
+               Container c = e.getComponent().getParent();
+               while (c != null)
+               {
+                    //System.out.println(c + "\n");
+                    last = c;
+                    c = c.getParent();
+               }
+               //System.out.println("this is the last one: " + last);
+               JFrame f = (JFrame)last;*/
+//                tree myTreeClass = (tree)f.getContentPane();
+               myTreeClass.getPopupMenu().show(e.getComponent(),e.getX(),e.getY());
+               //System.out.println("this is the last one: " + myTreeClass);
+          }
+     }//end maybeShowPopup
+     
+     private tree myTreeClass;
 }//end PopupListener
 

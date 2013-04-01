@@ -21,36 +21,36 @@ package scratchpad;
 
 public class DataInfo
 {
-	public DataInfo ()
-	{
-		name = "no name";
-		data = "no data";
-	}
-	public DataInfo (String n, String d)
-	{
-		name = n;
-		data = d;
-	}
-	public String toString()
-	{
-		return name;
-	}
-	
-	public void setName(String n)
-	{
-		name = n;
-	}
-	
-	public String getData()
-	{
-		return data;
-	}
-	
-	public void setData(String d)
-	{
-		data = d;
-	}
-	
-	private String name;
-	private String data;
+     public DataInfo ()
+     {
+          name = "no name";
+          data = "no data";
+     }
+     public DataInfo (String n, String d)
+     {
+          name = n;
+          data = d;
+     }
+     public String toString()
+     {
+          return name;
+     }
+     
+     public void setName(String n)
+     {
+          name = n;
+     }
+     
+     public String getData()
+     {
+          return data;
+     }
+     
+     public void setData(String d)
+     {
+          data = d;
+     }
+     
+     private String name;
+     private String data;
 }//end datainfo

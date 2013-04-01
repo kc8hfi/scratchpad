@@ -33,47 +33,47 @@ import java.awt.event.ActionEvent;
 
 public class NewAction extends AbstractAction
 {
-	public NewAction(tree t,String text, String actionCmd,String toolTip, ImageIcon icon, 
-					int mnemonic, KeyStroke accelerator)
-	{
-		super(text,icon); //text is the actual name
-		myTreeClass = t;
-		putValue(ACTION_COMMAND_KEY,actionCmd);	//set the actionCommand
-		putValue(SHORT_DESCRIPTION, toolTip); //set tooltiptext
-		putValue(MNEMONIC_KEY, mnemonic);	//set the underlined letter in the text
-		putValue(ACCELERATOR_KEY,accelerator);	//set the keyboard shortcut
-	}
-	public void actionPerformed(ActionEvent e)
-	{
-		JTree thetree = myTreeClass.getTree();
-		DefaultTreeModel treeModel = (DefaultTreeModel)thetree.getModel();
-		DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode)treeModel.getRoot();
-		while(treeModel.getChildCount(rootNode) != 0)
-		{
-			DefaultMutableTreeNode n = (DefaultMutableTreeNode)treeModel.getChild(rootNode,0);
-			//System.out.println(n.toString());
-			treeModel.removeNodeFromParent(n);
-		}
-		((DataInfo)rootNode.getUserObject()).setName("New Document");
-		((DataInfo)rootNode.getUserObject()).setData("");
+     public NewAction(tree t,String text, String actionCmd,String toolTip, ImageIcon icon, 
+                         int mnemonic, KeyStroke accelerator)
+     {
+          super(text,icon); //text is the actual name
+          myTreeClass = t;
+          putValue(ACTION_COMMAND_KEY,actionCmd);     //set the actionCommand
+          putValue(SHORT_DESCRIPTION, toolTip); //set tooltiptext
+          putValue(MNEMONIC_KEY, mnemonic);     //set the underlined letter in the text
+          putValue(ACCELERATOR_KEY,accelerator);     //set the keyboard shortcut
+     }
+     public void actionPerformed(ActionEvent e)
+     {
+          JTree thetree = myTreeClass.getTree();
+          DefaultTreeModel treeModel = (DefaultTreeModel)thetree.getModel();
+          DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode)treeModel.getRoot();
+          while(treeModel.getChildCount(rootNode) != 0)
+          {
+               DefaultMutableTreeNode n = (DefaultMutableTreeNode)treeModel.getChild(rootNode,0);
+               //System.out.println(n.toString());
+               treeModel.removeNodeFromParent(n);
+          }
+          ((DataInfo)rootNode.getUserObject()).setName("New Document");
+          ((DataInfo)rootNode.getUserObject()).setData("");
 
-		myTreeClass.setArticleSaved(1);
-		
-		//DataInfo t = (DataInfo)rootNode.getUserObject();
-		TreeNode [] nodes = treeModel.getPathToRoot(rootNode);
-		TreePath path = new TreePath(nodes);
-		thetree.setSelectionPath(new TreePath(nodes));
-		
-		//System.out.println("call node structure changed");
-		treeModel.nodeStructureChanged(rootNode);
-		
-		//set the file saved flag
-		myTreeClass.setFileSaved(0);
-		
-		//set the title
-		myTreeClass.getParentWindow().setTitle("Scratchpad - untitled");
-	}//end actionPerformed
-	
-	//private JFrame parentWindow;
-	private tree myTreeClass;
-}//end actionPerformed	
+          myTreeClass.setArticleSaved(1);
+          
+          //DataInfo t = (DataInfo)rootNode.getUserObject();
+          TreeNode [] nodes = treeModel.getPathToRoot(rootNode);
+          TreePath path = new TreePath(nodes);
+          thetree.setSelectionPath(new TreePath(nodes));
+          
+          //System.out.println("call node structure changed");
+          treeModel.nodeStructureChanged(rootNode);
+          
+          //set the file saved flag
+          myTreeClass.setFileSaved(0);
+          
+          //set the title
+          myTreeClass.getParentWindow().setTitle("Scratchpad - untitled");
+     }//end actionPerformed
+     
+     //private JFrame parentWindow;
+     private tree myTreeClass;
+}//end actionPerformed     

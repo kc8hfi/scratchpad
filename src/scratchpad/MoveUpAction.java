@@ -30,36 +30,36 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 public class MoveUpAction extends AbstractAction
 {
-	public MoveUpAction(tree t,String text, String actionCmd,String toolTip,ImageIcon icon,KeyStroke accelerator)
-	{
-		super(text,icon); //text is the actual name
-		myTree = t;
-		putValue(ACTION_COMMAND_KEY,actionCmd);
-		putValue(SHORT_DESCRIPTION, toolTip); //used for tooltip text
-		putValue(ACCELERATOR_KEY,accelerator);
-	}
-	public void actionPerformed(ActionEvent e)
-	{
-		JTree thetree = myTree.getTree();
-		DefaultTreeModel treeModel = (DefaultTreeModel)thetree.getModel();
-		DefaultMutableTreeNode selectedNode = null;
-		TreePath selectedNodePath = thetree.getSelectionPath();
-		if (selectedNodePath != null)
-		{
-			selectedNode = (DefaultMutableTreeNode)(selectedNodePath.getLastPathComponent());
-			//System.out.println(selectedNode.toString());
-			DefaultMutableTreeNode selectedNodeParent = (DefaultMutableTreeNode)selectedNode.getParent();
-			//System.out.println("parent:"+selectedNodeParent.toString());
-			int index = treeModel.getIndexOfChild(selectedNodeParent,selectedNode);
-			if (index >0)
-			{
-				//System.out.println("move the node");
-				treeModel.removeNodeFromParent(selectedNode);
-				treeModel.insertNodeInto(selectedNode,selectedNodeParent,index-1);
-				myTree.setFileSaved(0);
-				//saveAction.setEnabled(true);
-			}
-		}//no selected node
-	}//end actionPerformed
-	private tree myTree;
+     public MoveUpAction(tree t,String text, String actionCmd,String toolTip,ImageIcon icon,KeyStroke accelerator)
+     {
+          super(text,icon); //text is the actual name
+          myTree = t;
+          putValue(ACTION_COMMAND_KEY,actionCmd);
+          putValue(SHORT_DESCRIPTION, toolTip); //used for tooltip text
+          putValue(ACCELERATOR_KEY,accelerator);
+     }
+     public void actionPerformed(ActionEvent e)
+     {
+          JTree thetree = myTree.getTree();
+          DefaultTreeModel treeModel = (DefaultTreeModel)thetree.getModel();
+          DefaultMutableTreeNode selectedNode = null;
+          TreePath selectedNodePath = thetree.getSelectionPath();
+          if (selectedNodePath != null)
+          {
+               selectedNode = (DefaultMutableTreeNode)(selectedNodePath.getLastPathComponent());
+               //System.out.println(selectedNode.toString());
+               DefaultMutableTreeNode selectedNodeParent = (DefaultMutableTreeNode)selectedNode.getParent();
+               //System.out.println("parent:"+selectedNodeParent.toString());
+               int index = treeModel.getIndexOfChild(selectedNodeParent,selectedNode);
+               if (index >0)
+               {
+                    //System.out.println("move the node");
+                    treeModel.removeNodeFromParent(selectedNode);
+                    treeModel.insertNodeInto(selectedNode,selectedNodeParent,index-1);
+                    myTree.setFileSaved(0);
+                    //saveAction.setEnabled(true);
+               }
+          }//no selected node
+     }//end actionPerformed
+     private tree myTree;
 }//end MoveUpAction

@@ -30,41 +30,41 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 public class AddNodeAction extends AbstractAction
 {
-	public AddNodeAction(tree t,String text, String actionCmd,String toolTip,ImageIcon icon,KeyStroke accelerator)
-	{
-		super(text,icon); //text is the actual name
-		myTree = t;
-		putValue(ACTION_COMMAND_KEY,actionCmd);
-		putValue(SHORT_DESCRIPTION, toolTip); //used for tooltip text
-		putValue(ACCELERATOR_KEY,accelerator);
-	}
-	public void actionPerformed(ActionEvent e)
-	{
-		//System.out.println("add node command: " + e.getActionCommand());
-		JTree thetree = myTree.getTree();
-		DefaultTreeModel treeModel = (DefaultTreeModel)thetree.getModel();
-		int nodeCount = myTree.getNodeCount();
-		DataInfo n = new DataInfo("new node " + Integer.toString(nodeCount),"");
-		DefaultMutableTreeNode parentNode = null;
-		TreePath parentPath = thetree.getSelectionPath();
-		DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode)treeModel.getRoot();
-		if (parentPath == null) 
-		{
-			//There is no selection. Default to the root node.
-			parentNode = rootNode;
-		} 
-		else 
-		{
-			parentNode = (DefaultMutableTreeNode)(parentPath.getLastPathComponent());
-		}
-		DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(n);
-		treeModel.insertNodeInto(newNode,parentNode,parentNode.getChildCount());
-		myTree.setFileSaved(0);
-		thetree.scrollPathToVisible(new TreePath(newNode.getPath()));
-		
-		nodeCount++;
-		myTree.setNodeCount(nodeCount);
-	}//end actionPerformed
-	
-	private tree myTree;
+     public AddNodeAction(tree t,String text, String actionCmd,String toolTip,ImageIcon icon,KeyStroke accelerator)
+     {
+          super(text,icon); //text is the actual name
+          myTree = t;
+          putValue(ACTION_COMMAND_KEY,actionCmd);
+          putValue(SHORT_DESCRIPTION, toolTip); //used for tooltip text
+          putValue(ACCELERATOR_KEY,accelerator);
+     }
+     public void actionPerformed(ActionEvent e)
+     {
+          //System.out.println("add node command: " + e.getActionCommand());
+          JTree thetree = myTree.getTree();
+          DefaultTreeModel treeModel = (DefaultTreeModel)thetree.getModel();
+          int nodeCount = myTree.getNodeCount();
+          DataInfo n = new DataInfo("new node " + Integer.toString(nodeCount),"");
+          DefaultMutableTreeNode parentNode = null;
+          TreePath parentPath = thetree.getSelectionPath();
+          DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode)treeModel.getRoot();
+          if (parentPath == null) 
+          {
+               //There is no selection. Default to the root node.
+               parentNode = rootNode;
+          } 
+          else 
+          {
+               parentNode = (DefaultMutableTreeNode)(parentPath.getLastPathComponent());
+          }
+          DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(n);
+          treeModel.insertNodeInto(newNode,parentNode,parentNode.getChildCount());
+          myTree.setFileSaved(0);
+          thetree.scrollPathToVisible(new TreePath(newNode.getPath()));
+          
+          nodeCount++;
+          myTree.setNodeCount(nodeCount);
+     }//end actionPerformed
+     
+     private tree myTree;
 }//end AddNodeAction

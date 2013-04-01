@@ -30,40 +30,40 @@ import javax.swing.tree.TreePath;
 
 public class CopyAction extends AbstractAction
 {
-	public CopyAction(tree t, String text, ImageIcon icon,String desc, int mnemonic,KeyStroke accelerator)
-	{
-		super(text,icon); //text is the actual name
-		treeClass = t;
-		putValue(SHORT_DESCRIPTION, desc); //used for tooltip text
-		putValue(MNEMONIC_KEY, mnemonic);
-		putValue(ACCELERATOR_KEY,accelerator);
-	}
-	public void actionPerformed(ActionEvent e)
-	{
-		//System.out.println("with the new actions stuff,  " + e.getActionCommand());
-		//System.out.println("delete?,  " + e.getActionCommand());
-		JTree thetree = treeClass.getTree();
-		DefaultTreeModel treeModel = (DefaultTreeModel)thetree.getModel();
-		int j;
-		DefaultMutableTreeNode selectedNode = null;
-		TreePath selectedNodePath = thetree.getSelectionPath();
-		if (selectedNodePath != null)
-		{
-			selectedNode = (DefaultMutableTreeNode)(selectedNodePath.getLastPathComponent());
-			System.out.println("copy child count: " + Integer.toString(selectedNode.getChildCount()));
-			DataInfo copiedInfo = (DataInfo)selectedNode.getUserObject();
-			int moveCount = treeClass.getMoveCount();
-			DataInfo newCopy = new DataInfo(Integer.toString(moveCount) +" copy of " + copiedInfo.toString(),copiedInfo.getData());
-			treeClass.setMovingNode(new DefaultMutableTreeNode(newCopy));
-			//movingNode = selectedNode;
-			//gotta set the filesaved flag to false, 0
-			//setFileSaved(0);
-			System.out.println("copy: " + selectedNode.toString());
-			System.out.println("child count at end: " + Integer.toString(selectedNode.getChildCount()));
-			treeClass.enablePaste();
-			moveCount++;
-			treeClass.setMoveCount(moveCount);
-		}
-	}
-	private tree treeClass;
+     public CopyAction(tree t, String text, ImageIcon icon,String desc, int mnemonic,KeyStroke accelerator)
+     {
+          super(text,icon); //text is the actual name
+          treeClass = t;
+          putValue(SHORT_DESCRIPTION, desc); //used for tooltip text
+          putValue(MNEMONIC_KEY, mnemonic);
+          putValue(ACCELERATOR_KEY,accelerator);
+     }
+     public void actionPerformed(ActionEvent e)
+     {
+          //System.out.println("with the new actions stuff,  " + e.getActionCommand());
+          //System.out.println("delete?,  " + e.getActionCommand());
+          JTree thetree = treeClass.getTree();
+          DefaultTreeModel treeModel = (DefaultTreeModel)thetree.getModel();
+          int j;
+          DefaultMutableTreeNode selectedNode = null;
+          TreePath selectedNodePath = thetree.getSelectionPath();
+          if (selectedNodePath != null)
+          {
+               selectedNode = (DefaultMutableTreeNode)(selectedNodePath.getLastPathComponent());
+               System.out.println("copy child count: " + Integer.toString(selectedNode.getChildCount()));
+               DataInfo copiedInfo = (DataInfo)selectedNode.getUserObject();
+               int moveCount = treeClass.getMoveCount();
+               DataInfo newCopy = new DataInfo(Integer.toString(moveCount) +" copy of " + copiedInfo.toString(),copiedInfo.getData());
+               treeClass.setMovingNode(new DefaultMutableTreeNode(newCopy));
+               //movingNode = selectedNode;
+               //gotta set the filesaved flag to false, 0
+               //setFileSaved(0);
+               System.out.println("copy: " + selectedNode.toString());
+               System.out.println("child count at end: " + Integer.toString(selectedNode.getChildCount()));
+               treeClass.enablePaste();
+               moveCount++;
+               treeClass.setMoveCount(moveCount);
+          }
+     }
+     private tree treeClass;
 }//end CopyAction

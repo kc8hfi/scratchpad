@@ -29,102 +29,102 @@ import javax.sound.sampled.*;
 
 public class DeleteAction extends AbstractAction
 {
-	public DeleteAction(JFrame p,tree t,String text, String actionCmd,String toolTip,ImageIcon icon,KeyStroke accelerator)
-	{
-		super(text,icon); //text is the actual name
-		putValue(ACTION_COMMAND_KEY,actionCmd);
-		putValue(SHORT_DESCRIPTION, toolTip); //used for tooltip text
-		putValue(ACCELERATOR_KEY,accelerator);
-		
-		myTreeClass = t;
-		parentWindow = p;
-	}
-	public void actionPerformed(ActionEvent e)
-	{
-		//System.out.println("delete?,  " + e.getActionCommand());
-		JTree thetree = myTreeClass.getTree();
-		DefaultTreeModel treeModel = (DefaultTreeModel)thetree.getModel();
-		int j;
-		DefaultMutableTreeNode selectedNode = null;
-		TreePath selectedNodePath = thetree.getSelectionPath();
-		if (selectedNodePath != null)
-		{
-			selectedNode = (DefaultMutableTreeNode)(selectedNodePath.getLastPathComponent());
-			if (selectedNode.getParent() != null) //its not the root node
-			{
-				DefaultMutableTreeNode parent = (DefaultMutableTreeNode)selectedNode.getParent();
-				//System.out.println("selected node parent: " + parent.toString());
-				//System.out.println("selected node children: " + treeModel.getChildCount(selectedNode));
-				int total = treeModel.getChildCount(selectedNode);
-				if (treeModel.getChildCount(selectedNode) >=1)
-				{
-					//play a sound? 
-					playSound("pause");
-					j = showDialog();
-					//System.out.println("their choice: " + Integer.toString(j));
-					if (j == 0)
-					{
-						//go ahead and delete the node
-						while(treeModel.getChildCount(selectedNode) != 0)
-						{
-							DefaultMutableTreeNode c = (DefaultMutableTreeNode)treeModel.getChild(selectedNode,0);
-							//System.out.println("move: " + c.toString());
-							//System.out.println("before parent count: " + treeModel.getChildCount(parent));
-							treeModel.insertNodeInto(c,parent,treeModel.getChildCount(parent));
-							//System.out.println("after parent count: " + treeModel.getChildCount(parent));
-							//System.out.println("new child count of selectednode: " +treeModel.getChildCount(selectedNode));
-						}
-						//delete the selected node
-						treeModel.removeNodeFromParent(selectedNode);
-						//gotta set the filesaved flag to false, 0
-						myTreeClass.setFileSaved(0);
-					}//they picked yes to delete the node, end if
-				}//there was more than one child, end if
-				else
-				{
-					playSound("pause");
-					//System.out.println("remove the node since theres no children");
-					j = showDialog();
-					//System.out.println("their choice: " + Integer.toString(j));
-					if (j == 0)
-					{
-						//go ahead and delete the node
-						treeModel.removeNodeFromParent(selectedNode);
-						//gotta set the filesaved flag to false, 0
-						myTreeClass.setFileSaved(0);
-					}
-				}
-			}//end selected node is not the root node.  root node does not have a parent
-		}//end if they have a path to a selected node
-	}//end actionPerformed
-	
-	private void playSound(String s)
-	{
-		try
-		{
-			URL soundFileUrl = getClass().getResource("/resources/sounds/"+s+".wav");
-			AudioInputStream sound = AudioSystem.getAudioInputStream(soundFileUrl);
-			DataLine.Info info = new DataLine.Info(Clip.class,sound.getFormat());
-			Clip clip = (Clip)AudioSystem.getLine(info);
-			clip.open(sound);
-			clip.start();
-		}
-		catch (Exception soundException)
-		{
-			System.out.println("no sound, sorry");
-		}
-	}//end playSound
-	
-	private int showDialog()
-	{
-		int i = JOptionPane.showConfirmDialog(
-			parentWindow,"Do you really want to delete this item?",
-			"Delete Item?",JOptionPane.YES_NO_OPTION,
-			JOptionPane.QUESTION_MESSAGE
-		);
-		return i;
-	}
-	
-	private JFrame parentWindow;
-	private tree myTreeClass;
+     public DeleteAction(JFrame p,tree t,String text, String actionCmd,String toolTip,ImageIcon icon,KeyStroke accelerator)
+     {
+          super(text,icon); //text is the actual name
+          putValue(ACTION_COMMAND_KEY,actionCmd);
+          putValue(SHORT_DESCRIPTION, toolTip); //used for tooltip text
+          putValue(ACCELERATOR_KEY,accelerator);
+          
+          myTreeClass = t;
+          parentWindow = p;
+     }
+     public void actionPerformed(ActionEvent e)
+     {
+          //System.out.println("delete?,  " + e.getActionCommand());
+          JTree thetree = myTreeClass.getTree();
+          DefaultTreeModel treeModel = (DefaultTreeModel)thetree.getModel();
+          int j;
+          DefaultMutableTreeNode selectedNode = null;
+          TreePath selectedNodePath = thetree.getSelectionPath();
+          if (selectedNodePath != null)
+          {
+               selectedNode = (DefaultMutableTreeNode)(selectedNodePath.getLastPathComponent());
+               if (selectedNode.getParent() != null) //its not the root node
+               {
+                    DefaultMutableTreeNode parent = (DefaultMutableTreeNode)selectedNode.getParent();
+                    //System.out.println("selected node parent: " + parent.toString());
+                    //System.out.println("selected node children: " + treeModel.getChildCount(selectedNode));
+                    int total = treeModel.getChildCount(selectedNode);
+                    if (treeModel.getChildCount(selectedNode) >=1)
+                    {
+                         //play a sound? 
+                         playSound("pause");
+                         j = showDialog();
+                         //System.out.println("their choice: " + Integer.toString(j));
+                         if (j == 0)
+                         {
+                              //go ahead and delete the node
+                              while(treeModel.getChildCount(selectedNode) != 0)
+                              {
+                                   DefaultMutableTreeNode c = (DefaultMutableTreeNode)treeModel.getChild(selectedNode,0);
+                                   //System.out.println("move: " + c.toString());
+                                   //System.out.println("before parent count: " + treeModel.getChildCount(parent));
+                                   treeModel.insertNodeInto(c,parent,treeModel.getChildCount(parent));
+                                   //System.out.println("after parent count: " + treeModel.getChildCount(parent));
+                                   //System.out.println("new child count of selectednode: " +treeModel.getChildCount(selectedNode));
+                              }
+                              //delete the selected node
+                              treeModel.removeNodeFromParent(selectedNode);
+                              //gotta set the filesaved flag to false, 0
+                              myTreeClass.setFileSaved(0);
+                         }//they picked yes to delete the node, end if
+                    }//there was more than one child, end if
+                    else
+                    {
+                         playSound("pause");
+                         //System.out.println("remove the node since theres no children");
+                         j = showDialog();
+                         //System.out.println("their choice: " + Integer.toString(j));
+                         if (j == 0)
+                         {
+                              //go ahead and delete the node
+                              treeModel.removeNodeFromParent(selectedNode);
+                              //gotta set the filesaved flag to false, 0
+                              myTreeClass.setFileSaved(0);
+                         }
+                    }
+               }//end selected node is not the root node.  root node does not have a parent
+          }//end if they have a path to a selected node
+     }//end actionPerformed
+     
+     private void playSound(String s)
+     {
+          try
+          {
+               URL soundFileUrl = getClass().getResource("/resources/sounds/"+s+".wav");
+               AudioInputStream sound = AudioSystem.getAudioInputStream(soundFileUrl);
+               DataLine.Info info = new DataLine.Info(Clip.class,sound.getFormat());
+               Clip clip = (Clip)AudioSystem.getLine(info);
+               clip.open(sound);
+               clip.start();
+          }
+          catch (Exception soundException)
+          {
+               System.out.println("no sound, sorry");
+          }
+     }//end playSound
+     
+     private int showDialog()
+     {
+          int i = JOptionPane.showConfirmDialog(
+               parentWindow,"Do you really want to delete this item?",
+               "Delete Item?",JOptionPane.YES_NO_OPTION,
+               JOptionPane.QUESTION_MESSAGE
+          );
+          return i;
+     }
+     
+     private JFrame parentWindow;
+     private tree myTreeClass;
 }//end class DeleteAction

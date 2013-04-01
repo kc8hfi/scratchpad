@@ -28,30 +28,30 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 public class SaveArticleAction extends AbstractAction
 {
-	public SaveArticleAction(tree t,String text, String actionCmd,String toolTip,ImageIcon icon)
-	{
-		super(text,icon); //text is the actual name
-		myTree = t;
-		putValue(ACTION_COMMAND_KEY,actionCmd);
-		putValue(SHORT_DESCRIPTION, toolTip); //used for tooltip text
-	}
-	public void actionPerformed(ActionEvent e)
-	{
-		//System.out.println("with the new actions stuff,  " + e.getActionCommand());
-		JTree thetree = myTree.getTree();
-		TreePath path = thetree.getSelectionPath();
-		if (path != null)
-		{
-			DefaultMutableTreeNode node = (DefaultMutableTreeNode)path.getLastPathComponent();
-			//System.out.println("before: " + node.toString());
-			DataInfo d = (DataInfo)(node.getUserObject());
-			System.out.println(node.toString());
-			d.setData(myTree.getTextPaneText());
-			System.out.println(myTree.getTextPaneText());
-			myTree.setArticleSaved(1);
-			//articleSaved = 1;
-			//saveArticleAction.setEnabled(false);
-		}
-	}//end actionPerformed
-	private tree myTree;
+     public SaveArticleAction(tree t,String text, String actionCmd,String toolTip,ImageIcon icon)
+     {
+          super(text,icon); //text is the actual name
+          myTree = t;
+          putValue(ACTION_COMMAND_KEY,actionCmd);
+          putValue(SHORT_DESCRIPTION, toolTip); //used for tooltip text
+     }
+     public void actionPerformed(ActionEvent e)
+     {
+          //System.out.println("with the new actions stuff,  " + e.getActionCommand());
+          JTree thetree = myTree.getTree();
+          TreePath path = thetree.getSelectionPath();
+          if (path != null)
+          {
+               DefaultMutableTreeNode node = (DefaultMutableTreeNode)path.getLastPathComponent();
+               //System.out.println("before: " + node.toString());
+               DataInfo d = (DataInfo)(node.getUserObject());
+               System.out.println(node.toString());
+               d.setData(myTree.getTextPaneText());
+               System.out.println(myTree.getTextPaneText());
+               myTree.setArticleSaved(1);
+               //articleSaved = 1;
+               //saveArticleAction.setEnabled(false);
+          }
+     }//end actionPerformed
+     private tree myTree;
 }//end SaveArticleAction

@@ -30,38 +30,38 @@ import javax.swing.tree.TreePath;
 
 public class PasteSiblingAction extends AbstractAction
 {
-	public PasteSiblingAction(tree t,String text, String actionCmd,ImageIcon icon,String desc,KeyStroke accelerator)
-	{
-		super(text,icon); //text is the actual name
-		myTreeClass = t;
-		putValue(SHORT_DESCRIPTION, desc); //used for tooltip text
-		putValue(ACTION_COMMAND_KEY,actionCmd);
-		putValue(ACCELERATOR_KEY,accelerator);
-	}
-	public void actionPerformed(ActionEvent e)
-	{
-		//System.out.println("with the new actions stuff,  " + e.getActionCommand());
-		JTree thetree = myTreeClass.getTree();
-		DefaultTreeModel treeModel = (DefaultTreeModel)thetree.getModel();
-		int j;
-		DefaultMutableTreeNode selectedNode = null;
-		TreePath selectedNodePath = thetree.getSelectionPath();
-		DefaultMutableTreeNode root = (DefaultMutableTreeNode)treeModel.getRoot();
-		if (selectedNodePath != null)
-		{
-			selectedNode = (DefaultMutableTreeNode)(selectedNodePath.getLastPathComponent());
-			DefaultMutableTreeNode selectedNodeParent = (DefaultMutableTreeNode)selectedNode.getParent();
-			if (!selectedNode.toString().equals(root.toString()))
-			{
-				int index = treeModel.getIndexOfChild(selectedNodeParent,selectedNode);
-				if (myTreeClass.getMovingNode() != null)
-				{
-					treeModel.insertNodeInto(myTreeClass.getMovingNode(),selectedNodeParent,index+1);
-					myTreeClass.setFileSaved(0);
-					myTreeClass.disablePaste();
-				}
-			}
-		}
-	}//end actionPerformed
-	private tree myTreeClass;
+     public PasteSiblingAction(tree t,String text, String actionCmd,ImageIcon icon,String desc,KeyStroke accelerator)
+     {
+          super(text,icon); //text is the actual name
+          myTreeClass = t;
+          putValue(SHORT_DESCRIPTION, desc); //used for tooltip text
+          putValue(ACTION_COMMAND_KEY,actionCmd);
+          putValue(ACCELERATOR_KEY,accelerator);
+     }
+     public void actionPerformed(ActionEvent e)
+     {
+          //System.out.println("with the new actions stuff,  " + e.getActionCommand());
+          JTree thetree = myTreeClass.getTree();
+          DefaultTreeModel treeModel = (DefaultTreeModel)thetree.getModel();
+          int j;
+          DefaultMutableTreeNode selectedNode = null;
+          TreePath selectedNodePath = thetree.getSelectionPath();
+          DefaultMutableTreeNode root = (DefaultMutableTreeNode)treeModel.getRoot();
+          if (selectedNodePath != null)
+          {
+               selectedNode = (DefaultMutableTreeNode)(selectedNodePath.getLastPathComponent());
+               DefaultMutableTreeNode selectedNodeParent = (DefaultMutableTreeNode)selectedNode.getParent();
+               if (!selectedNode.toString().equals(root.toString()))
+               {
+                    int index = treeModel.getIndexOfChild(selectedNodeParent,selectedNode);
+                    if (myTreeClass.getMovingNode() != null)
+                    {
+                         treeModel.insertNodeInto(myTreeClass.getMovingNode(),selectedNodeParent,index+1);
+                         myTreeClass.setFileSaved(0);
+                         myTreeClass.disablePaste();
+                    }
+               }
+          }
+     }//end actionPerformed
+     private tree myTreeClass;
 }//end PasteSiblingAction

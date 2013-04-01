@@ -28,37 +28,37 @@ import java.io.File;
 
 public class SaveAsAction extends AbstractAction
 {
-	public SaveAsAction(JFrame p,tree t,String text,String desc)
-	{
-		super(text); //text is the actual name
-		parentWindow = p;
-		myTreeClass = t;
-		putValue(SHORT_DESCRIPTION, desc); //used for tooltip text
-	}
-	public void actionPerformed(ActionEvent e)
-	{
-		System.out.println("with the new actions stuff,  " + e.getActionCommand());
-		JFileChooser filePicker = new JFileChooser();
-		int returnValue = filePicker.showSaveDialog(parentWindow);
-		if (returnValue == filePicker.APPROVE_OPTION)
-		{
-			System.out.println("they clicked ok");
-			File f = filePicker.getSelectedFile();
-			System.out.println(f.getName());
-			
-			//create a new SaveToDisk object
-			SaveToDisk saveme = new SaveToDisk(myTreeClass,f);
-			saveme.write();
-			myTreeClass.setFileName(f.getPath());
-			myTreeClass.setFileSaved(1);
-			
-			//myTreeClass.getParentWindow().setTitle("inside save as action");
-			
-			//System.out.println("get path: " + f.getPath());
-			//System.out.println("get absolute path: " + f.getAbsolutePath());
-			
-		}//they clicked ok
-	}
-	private JFrame parentWindow;
-	private tree myTreeClass;
+     public SaveAsAction(JFrame p,tree t,String text,String desc)
+     {
+          super(text); //text is the actual name
+          parentWindow = p;
+          myTreeClass = t;
+          putValue(SHORT_DESCRIPTION, desc); //used for tooltip text
+     }
+     public void actionPerformed(ActionEvent e)
+     {
+          System.out.println("with the new actions stuff,  " + e.getActionCommand());
+          JFileChooser filePicker = new JFileChooser();
+          int returnValue = filePicker.showSaveDialog(parentWindow);
+          if (returnValue == filePicker.APPROVE_OPTION)
+          {
+               System.out.println("they clicked ok");
+               File f = filePicker.getSelectedFile();
+               System.out.println(f.getName());
+               
+               //create a new SaveToDisk object
+               SaveToDisk saveme = new SaveToDisk(myTreeClass,f);
+               saveme.write();
+               myTreeClass.setFileName(f.getPath());
+               myTreeClass.setFileSaved(1);
+               
+               //myTreeClass.getParentWindow().setTitle("inside save as action");
+               
+               //System.out.println("get path: " + f.getPath());
+               //System.out.println("get absolute path: " + f.getAbsolutePath());
+               
+          }//they clicked ok
+     }
+     private JFrame parentWindow;
+     private tree myTreeClass;
 }//end class

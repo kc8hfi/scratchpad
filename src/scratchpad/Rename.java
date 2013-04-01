@@ -28,123 +28,123 @@ import javax.sound.sampled.*;
 
 public class Rename extends JDialog
 {
-	public Rename (JFrame f)
-	{
-		super (f,true);
+     public Rename (JFrame f)
+     {
+          super (f,true);
 
-		parentWindow = f;
-		Action okButtonAction = new OkButtonAction("Ok");
-		Action cancelButtonAction = new CancelButtonAction("Cancel");
-		
-		okButton = new JButton(okButtonAction);
-		cancelButton = new JButton(cancelButtonAction);
+          parentWindow = f;
+          Action okButtonAction = new OkButtonAction("Ok");
+          Action cancelButtonAction = new CancelButtonAction("Cancel");
+          
+          okButton = new JButton(okButtonAction);
+          cancelButton = new JButton(cancelButtonAction);
 
-		renameField = new JTextField(15);
-		label = new JLabel("New Name:");
-		newName = "";
-		
-		JPanel namePanel = new JPanel();
-		namePanel.add(label);
-		namePanel.add(renameField);
-		
-		JPanel buttonPanel = new JPanel();
-		buttonPanel.add(okButton);
-		buttonPanel.add(cancelButton);
-		
-		JPanel everything = new JPanel();
-		everything.setLayout(new BoxLayout(everything,BoxLayout.PAGE_AXIS));
-		
-		everything.add(namePanel);
-		everything.add(buttonPanel);
-		
-		setContentPane(everything);
-		setTitle("Rename Item");
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		setModal(true);
-		pack();
-		setMinimumSize(new Dimension(250,150));
-	}//end constructor
-	
-	private JTextField renameField;
-	private JButton okButton;
-	private JButton cancelButton;
-	private JLabel label;
-	private String newName;
-	private JFrame parentWindow;
-	
-	public String getName()
-	{
-		return newName;
-	}
-	
-	public void setName(String n)
-	{
-		renameField.setText(n);
-		renameField.requestFocus();
-		renameField.selectAll();
-	}
-	
-	private void playSound(String s)
-	{
-		try
-		{
-			URL soundFileUrl = getClass().getResource("/resources/sounds/"+s+".wav");
-			AudioInputStream sound = AudioSystem.getAudioInputStream(soundFileUrl);
-			DataLine.Info info = new DataLine.Info(Clip.class,sound.getFormat());
-			Clip clip = (Clip)AudioSystem.getLine(info);
-			clip.open(sound);
-			clip.start();
-		}
-		catch (Exception soundException)
-		{
-			System.out.println("no sound, sorry");
-		}
-	}//end playSound
-	
+          renameField = new JTextField(15);
+          label = new JLabel("New Name:");
+          newName = "";
+          
+          JPanel namePanel = new JPanel();
+          namePanel.add(label);
+          namePanel.add(renameField);
+          
+          JPanel buttonPanel = new JPanel();
+          buttonPanel.add(okButton);
+          buttonPanel.add(cancelButton);
+          
+          JPanel everything = new JPanel();
+          everything.setLayout(new BoxLayout(everything,BoxLayout.PAGE_AXIS));
+          
+          everything.add(namePanel);
+          everything.add(buttonPanel);
+          
+          setContentPane(everything);
+          setTitle("Rename Item");
+          setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+          setModal(true);
+          pack();
+          setMinimumSize(new Dimension(250,150));
+     }//end constructor
+     
+     private JTextField renameField;
+     private JButton okButton;
+     private JButton cancelButton;
+     private JLabel label;
+     private String newName;
+     private JFrame parentWindow;
+     
+     public String getName()
+     {
+          return newName;
+     }
+     
+     public void setName(String n)
+     {
+          renameField.setText(n);
+          renameField.requestFocus();
+          renameField.selectAll();
+     }
+     
+     private void playSound(String s)
+     {
+          try
+          {
+               URL soundFileUrl = getClass().getResource("/resources/sounds/"+s+".wav");
+               AudioInputStream sound = AudioSystem.getAudioInputStream(soundFileUrl);
+               DataLine.Info info = new DataLine.Info(Clip.class,sound.getFormat());
+               Clip clip = (Clip)AudioSystem.getLine(info);
+               clip.open(sound);
+               clip.start();
+          }
+          catch (Exception soundException)
+          {
+               System.out.println("no sound, sorry");
+          }
+     }//end playSound
+     
 
-	class OkButtonAction extends AbstractAction
-	{
-		public OkButtonAction(String t)
-		{
-			super(t);
-		}
-		
-		public void actionPerformed(ActionEvent e)
-		{
-			if (renameField.getText().equals("") != true)
-			{
-				newName = renameField.getText();
-				renameField.setText("");
-				setVisible(false);
-			}
-			else
-			{
-				//playSound("monkey");
-				playSound("bullet2");
-				//playSound("357magnum");
-				//playSound("pause");
-				
-				System.out.println("tell them to type in a name!");
-				JOptionPane.showMessageDialog(parentWindow,"Please type in a name.","Error!",
-										JOptionPane.ERROR_MESSAGE);
-			}
-		}
-		//private JDialog parent;
-	}
+     class OkButtonAction extends AbstractAction
+     {
+          public OkButtonAction(String t)
+          {
+               super(t);
+          }
+          
+          public void actionPerformed(ActionEvent e)
+          {
+               if (renameField.getText().equals("") != true)
+               {
+                    newName = renameField.getText();
+                    renameField.setText("");
+                    setVisible(false);
+               }
+               else
+               {
+                    //playSound("monkey");
+                    playSound("bullet2");
+                    //playSound("357magnum");
+                    //playSound("pause");
+                    
+                    System.out.println("tell them to type in a name!");
+                    JOptionPane.showMessageDialog(parentWindow,"Please type in a name.","Error!",
+                                                  JOptionPane.ERROR_MESSAGE);
+               }
+          }
+          //private JDialog parent;
+     }
 
-	class CancelButtonAction extends AbstractAction
-	{
-		public CancelButtonAction(String t)
-		{
-			super(t);
-		}
-		public void actionPerformed(ActionEvent e)
-		{
-			renameField.setText("");
-			newName = "";
-			setVisible(false);
-		}
-	}
+     class CancelButtonAction extends AbstractAction
+     {
+          public CancelButtonAction(String t)
+          {
+               super(t);
+          }
+          public void actionPerformed(ActionEvent e)
+          {
+               renameField.setText("");
+               newName = "";
+               setVisible(false);
+          }
+     }
 
 
 }//end Rename class
